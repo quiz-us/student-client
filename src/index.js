@@ -26,7 +26,7 @@ const httpLink = createHttpLink({
 const asyncAuthLink = setContext(
   (_, { headers }) =>
     new Promise((resolve, reject) => {
-      localforage.getItem('__QUIZUS__').then(token => {
+      localforage.getItem('__STUDENT_QUIZUS__').then(token => {
         resolve({
           headers: {
             ...headers,

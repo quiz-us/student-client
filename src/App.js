@@ -5,8 +5,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './components/home/Home';
 import Auth from './components/auth/Auth';
+import LogIn from './components/auth/LogIn';
 import teal from '@material-ui/core/colors/teal';
 import amber from '@material-ui/core/colors/amber';
+import PrivateRoute from './components/PrivateRoute';
 
 const theme = createMuiTheme({
   palette: {
@@ -20,7 +22,8 @@ function App() {
     <Router>
       <ThemeProvider theme={theme}>
         <Nav />
-        <Route exact path="/" component={Home} />
+        <PrivateRoute exact path="/" component={Home} />
+        <Route path="/login" component={LogIn} />
         <Route exact path="/auth" component={Auth} />
       </ThemeProvider>
     </Router>

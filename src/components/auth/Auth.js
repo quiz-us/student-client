@@ -18,7 +18,7 @@ export default ({ location: { search }, history }) => {
   const [logInStudent, { loading }] = useMutation(LOG_IN, {
     onCompleted: ({ logInStudent: { token } }) => {
       if (token) {
-        localforage.setItem('__QUIZUS__', token).then(() => {
+        localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
           const {
             push,
             location: { state = { from: { pathname: '/' } } }
