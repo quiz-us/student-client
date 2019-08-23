@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
-import { makeStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles({
+const styles = theme => ({
   root: {
     height: '100%',
     display: 'flex',
@@ -15,6 +15,12 @@ const useStyles = makeStyles({
   },
   formContainer: {
     width: '30%',
+    [theme.breakpoints.down('md')]: {
+      width: '50%'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '85%'
+    },
     height: '30%',
     padding: '30px',
     display: 'flex',
@@ -37,15 +43,31 @@ const CREATE_LOGIN_LINK = gql`
   }
 `;
 
-export default () => {
-  const classes = useStyles();
-  const [createLoginLink, { loading, error }] = useMutation(CREATE_LOGIN_LINK);
+const Login = ({ classes }) => {
+  const [email, setEmail] = useState('');
+  const [createLoginLink, { loading, error }] = useMutation(CREATE_LOGIN_LINK, {
+    onCompleted: data => console.log('done', data),
+    onError: err => console.error('error occured:', error)
+  });
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    createLoginLink({ variables: { email } });
+  };
+
   return (
     <div className={classes.root}>
       <Card className={classes.formContainer}>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <h3>Enter email:</h3>
-          <TextField required label="Email" type="email" name="email" />
+          <TextField
+            required
+            label="Email"
+            type="email"
+            name="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
           <Button
             color="primary"
             variant="contained"
@@ -59,3 +81,5 @@ export default () => {
     </div>
   );
 };
+
+export default withStyles(styles)(Login);
