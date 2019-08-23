@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/styles';
 import { useMutation } from '@apollo/react-hooks';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import gql from 'graphql-tag';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 
 const styles = theme => ({
   root: {
@@ -45,14 +51,54 @@ const CREATE_LOGIN_LINK = gql`
 
 const Login = ({ classes }) => {
   const [email, setEmail] = useState('');
-  const [createLoginLink, { loading, error }] = useMutation(CREATE_LOGIN_LINK, {
-    onCompleted: data => console.log('done', data),
-    onError: err => console.error('error occured:', error)
+  const [dialogState, setDialogState] = useState({
+    open: false,
+    message: '',
+    title: ''
+  });
+
+  const { open, message, title } = dialogState;
+  const [createLoginLink, { loading }] = useMutation(CREATE_LOGIN_LINK, {
+    onCompleted: ({ createLoginLink }) => {
+      let message =
+        'There was an issue sending your login email. Please try again.';
+      let title = 'Something went wrong';
+      if (createLoginLink) {
+        message = 'Please check your email for the login link!';
+        title = 'Success!';
+      }
+      setDialogState({
+        open: true,
+        message,
+        title
+      });
+    },
+    onError: err => {
+      const title = 'Something went wrong';
+      let message =
+        'There was an issue sending your login email. Please try again.';
+      if (err.message === 'GraphQL error: Not Found') {
+        message =
+          "Hmm it doesn't look like that email exists. Please check to make sure you've typed it in correctly. If that doesn't solve the issue, please check in with your teacher!";
+      }
+      setDialogState({
+        open: true,
+        message,
+        title
+      });
+    }
   });
 
   const handleSubmit = e => {
     e.preventDefault();
     createLoginLink({ variables: { email } });
+  };
+
+  const handleClose = () => {
+    setDialogState({
+      ...dialogState,
+      open: false
+    });
   };
 
   return (
@@ -68,16 +114,31 @@ const Login = ({ classes }) => {
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            className={classes.submitButton}
-          >
-            Send Log In Link to My Email
-          </Button>
+          {loading ? (
+            <LinearProgress className={classes.submitButton} />
+          ) : (
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              className={classes.submitButton}
+            >
+              Send Log In Link to My Email
+            </Button>
+          )}
         </form>
       </Card>
+      <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="md">
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{message}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
