@@ -85,7 +85,9 @@ export default function Nav({ currentStudent = {} }) {
               Quiz Us
             </Link>
           </Typography>
-          <Button color="inherit">{`${firstName} ${lastName}`}</Button>
+          {currentStudent && (
+            <Button color="inherit">{`${firstName} ${lastName}`}</Button>
+          )}
         </Toolbar>
         <Drawer open={navOpen} onClose={closeNav}>
           {sideNav()}
