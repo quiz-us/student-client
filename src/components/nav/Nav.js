@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import { Link } from 'react-router-dom';
@@ -33,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ButtonAppBar() {
+export default function Nav({ currentStudent }) {
   const classes = useStyles();
   const [navOpen, setNavOpen] = useState(false);
 
@@ -83,6 +84,7 @@ export default function ButtonAppBar() {
               Quiz Us
             </Link>
           </Typography>
+          <Button color="inherit">Login</Button>
         </Toolbar>
         <Drawer open={navOpen} onClose={closeNav}>
           {sideNav()}

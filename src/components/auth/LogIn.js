@@ -12,36 +12,38 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 
-const styles = theme => ({
-  root: {
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '50px'
-  },
-  formContainer: {
-    width: '30%',
-    [theme.breakpoints.down('md')]: {
-      width: '50%'
+const styles = theme => {
+  return {
+    root: {
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center'
     },
-    [theme.breakpoints.down('sm')]: {
-      width: '85%'
+    formContainer: {
+      marginTop: '60px',
+      height: 'max-content',
+      width: '30%',
+      [theme.breakpoints.down('md')]: {
+        width: '50%'
+      },
+      [theme.breakpoints.down('sm')]: {
+        width: '85%'
+      },
+      padding: '30px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-around'
     },
-    height: '30%',
-    padding: '30px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
-  submitButton: {
-    marginTop: '30px'
-  }
-});
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    },
+    submitButton: {
+      marginTop: '30px'
+    }
+  };
+};
 
 const CREATE_LOGIN_LINK = gql`
   mutation createLoginLink($email: String!) {

@@ -42,13 +42,6 @@ const asyncAuthLink = setContext(
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) => {
-      if (message === 'Unauthenticated') {
-        appCache.writeData({
-          data: {
-            loggedIn: false
-          }
-        });
-      }
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
           locations
@@ -69,12 +62,6 @@ const link = ApolloLink.from([errorLink, asyncAuthLink, httpLink]);
 const client = new ApolloClient({
   link,
   cache: appCache
-});
-
-client.writeData({
-  data: {
-    loggedIn: false
-  }
 });
 
 ReactDOM.render(

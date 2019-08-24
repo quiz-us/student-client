@@ -1,31 +1,26 @@
 import React, { useEffect } from 'react';
 import localforage from 'localforage';
 import gql from 'graphql-tag';
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
 const LOG_IN = gql`
   mutation logInStudent($token: String!) {
     logInStudent(token: $token) {
-      id
-      email
       token
     }
   }
 `;
 
 export default ({ location: { search }, history }) => {
-  const client = useApolloClient();
-  const [logInStudent, { loading }] = useMutation(LOG_IN, {
-    onCompleted: ({ logInStudent: { token } }) => {
+  const [logInStudent, { loading, error }] = useMutation(LOG_IN, {
+    onCompleted: ({ logInStudent }) => {
+      const { token } = logInStudent;
       if (token) {
         localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
           const {
             push,
             location: { state = { from: { pathname: '/' } } }
           } = history;
-          client.writeData({
-            data: { loggedIn: true }
-          });
           push(state.from.pathname);
         });
       }
@@ -38,6 +33,11 @@ export default ({ location: { search }, history }) => {
   }, [logInStudent, search]);
   if (loading) {
     return <div>Signing In...</div>;
+  }
+  if (error) {
+    return (
+      <div>Something went wrong. Please request another email login link.</div>
+    );
   }
   return null;
 };
