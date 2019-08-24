@@ -10,6 +10,7 @@ import amber from '@material-ui/core/colors/amber';
 import { useQuery } from '@apollo/react-hooks';
 import Auth from './components/auth/Auth';
 import gql from 'graphql-tag';
+import GlobalLoader from './app/GlobalLoader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const theme = createMuiTheme({
@@ -34,7 +35,7 @@ const App = () => {
   const { data, loading } = useQuery(GET_CURRENT_STUDENT);
   const currentStudent = data && data.currentStudent;
   if (loading) {
-    return null;
+    return <GlobalLoader />;
   }
 
   return (
