@@ -10,6 +10,7 @@ import amber from '@material-ui/core/colors/amber';
 import { useQuery } from '@apollo/react-hooks';
 import Auth from './components/auth/Auth';
 import gql from 'graphql-tag';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const theme = createMuiTheme({
   palette: {
@@ -47,6 +48,7 @@ const App = () => {
 export default () => (
   <Router>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Switch>
         <Route path="/auth" component={Auth} />
         <Route path="/" component={App} />
