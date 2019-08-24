@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Nav({ currentStudent = {} }) {
-  const { firstName, lastName } = currentStudent;
+  const { firstName = '', lastName = '' } = currentStudent;
   const classes = useStyles();
   const [navOpen, setNavOpen] = useState(false);
 

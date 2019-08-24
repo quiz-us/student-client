@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import Nav from './components/nav/Nav';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/home/Home';
 import LogIn from './components/auth/LogIn';
 import teal from '@material-ui/core/colors/teal';
@@ -29,10 +29,10 @@ const GET_CURRENT_STUDENT = gql`
   }
 `;
 
-const App = ({ match }) => {
+const App = () => {
   const { data, loading } = useQuery(GET_CURRENT_STUDENT);
   const currentStudent = data && data.currentStudent;
-  if (loading || match.pathname === '/auth') {
+  if (loading) {
     return null;
   }
 
@@ -47,8 +47,10 @@ const App = ({ match }) => {
 export default () => (
   <Router>
     <ThemeProvider theme={theme}>
-      <Route path="/" component={App} />
-      <Route path="/auth" component={Auth} />
+      <Switch>
+        <Route path="/auth" component={Auth} />
+        <Route path="/" component={App} />
+      </Switch>
     </ThemeProvider>
   </Router>
 );
