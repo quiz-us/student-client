@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Nav({ currentStudent }) {
+export default function Nav({ currentStudent = {} }) {
+  const { firstName, lastName } = currentStudent;
   const classes = useStyles();
   const [navOpen, setNavOpen] = useState(false);
 
@@ -84,7 +85,7 @@ export default function Nav({ currentStudent }) {
               Quiz Us
             </Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">{`${firstName} ${lastName}`}</Button>
         </Toolbar>
         <Drawer open={navOpen} onClose={closeNav}>
           {sideNav()}
