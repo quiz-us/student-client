@@ -10,7 +10,7 @@ import amber from '@material-ui/core/colors/amber';
 import { useQuery } from '@apollo/react-hooks';
 import Auth from './components/auth/Auth';
 import gql from 'graphql-tag';
-import GlobalLoader from './app/GlobalLoader';
+import GlobalLoader from './components/app/GlobalLoader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const theme = createMuiTheme({
