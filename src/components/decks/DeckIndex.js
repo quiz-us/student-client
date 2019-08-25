@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Container from '@material-ui/core/Container';
-import tileData from './tileData';
 import withWidth from '@material-ui/core/withWidth';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_DECKS } from '../queries/Deck';
