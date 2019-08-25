@@ -28,8 +28,7 @@ const DeckIndex = ({ width }) => {
   if (loading) {
     return <GlobalLoader />;
   }
-  const { studentDecks = [] } = data;
-  console.log(studentDecks);
+  const { studentAssignments = [] } = data;
   const numColumns = ['xs', 'sm'].includes(width) ? 1 : 2;
   return (
     <div className={classes.root}>
@@ -40,7 +39,7 @@ const DeckIndex = ({ width }) => {
           cols={numColumns}
           className={classes.gridList}
         >
-          {studentDecks.map(assignment => (
+          {studentAssignments.map(assignment => (
             <GridListTile key={`assignment${assignment.id}`}>
               <DeckDisplay assignment={assignment} />
             </GridListTile>

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_DECKS = gql`
-  query getDecks {
-    studentDecks {
+  query getAssignments {
+    studentAssignments {
       instructions
       id
       deck {
