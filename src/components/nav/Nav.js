@@ -3,21 +3,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Button from '@material-ui/core/Button';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
 import { Link } from 'react-router-dom';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
-  menuButton: {
+  menuIcon: {
     marginRight: theme.spacing(2)
   },
   title: {
@@ -25,73 +21,56 @@ const useStyles = makeStyles(theme => ({
   },
   white: {
     color: 'white'
-  },
-  list: {
-    width: 350
-  },
-  navHeader: {
-    padding: '10px 20px'
   }
 }));
 
 export default function Nav({ currentStudent = {} }) {
   const { firstName = '', lastName = '' } = currentStudent;
+  const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
-  const [navOpen, setNavOpen] = useState(false);
 
-  const sideNav = () => (
-    <div className={classes.list} onClick={closeNav} onKeyDown={closeNav}>
-      <h3 className={classes.navHeader}>
-        <Link to="/">Quiz Us</Link>
-      </h3>
-      <Divider />
-      <List>
-        <Link to="/">
-          <ListItem button>
-            <ListItemText primary={'My Account'} />
-          </ListItem>
-        </Link>
-      </List>
-    </div>
-  );
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const openNav = () => setNavOpen(true);
-
-  const closeNav = event => {
-    if (
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return;
-    }
-    setNavOpen(false);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={openNav}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Link className={classes.white} to="/">
               Quiz Us
             </Link>
           </Typography>
           {currentStudent && (
-            <Button color="inherit">{`${firstName} ${lastName}`}</Button>
+            <React.Fragment>
+              <Button
+                color="inherit"
+                onClick={handleClick}
+              >{`${firstName} ${lastName}`}</Button>
+              <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right'
+                }}
+                getContentAnchorEl={null}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>
+                  <ExitToAppIcon className={classes.menuIcon} />
+                  Logout
+                </MenuItem>
+              </Menu>
+            </React.Fragment>
           )}
         </Toolbar>
-        <Drawer open={navOpen} onClose={closeNav}>
-          {sideNav()}
-        </Drawer>
       </AppBar>
     </div>
   );
