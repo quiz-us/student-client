@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
   menuIcon: {
     marginRight: theme.spacing(2)
   },
@@ -39,7 +42,7 @@ export default function Nav({ currentStudent = {} }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <Link className={classes.white} to="/">

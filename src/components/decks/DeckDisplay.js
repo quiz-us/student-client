@@ -46,9 +46,11 @@ const DeckDisplay = ({ assignment }) => {
         </CardContent>
 
         <CardActions className={classes.actions}>
-          <Button size="small" color="primary">
-            Study
-          </Button>
+          <Link to={`/study/${assignment.id}`}>
+            <Button size="small" color="primary">
+              Study
+            </Button>
+          </Link>
         </CardActions>
       </Card>
     </React.Fragment>
