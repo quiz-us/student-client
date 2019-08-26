@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
   details: {
     margin: '40px 0'
   },
+  detailsContent: {
+    lineHeight: 1.5
+  },
   progress: {
     margin: '40px auto 20px auto'
   }
@@ -55,22 +58,24 @@ const StudySessionDetails = ({ assignment }) => {
       <Divider />
       <Container className={classes.topContainer}>
         <div className={classes.details}>
-          <h3>Deck Name</h3>
-          <div>
-            <strong>Description: </strong>
-            {deck.description ? `${deck.description}` : 'No Description'}
-          </div>
-          <div>
-            <strong>Instructions: </strong>{' '}
-            {assignment.instructions
-              ? `${assignment.instructions}`
-              : 'No Instructions'}
-          </div>
-          <div>
-            <strong>Due: </strong>
-            {assignment.due
-              ? `${new Date(assignment.due).toLocaleDateString('en-US')}`
-              : 'No Due Date'}
+          <h3>{deck.name}</h3>
+          <div className={classes.detailsContent}>
+            <div>
+              <strong>Description: </strong>
+              {deck.description ? `${deck.description}` : 'No Description'}
+            </div>
+            <div>
+              <strong>Instructions: </strong>{' '}
+              {assignment.instructions
+                ? `${assignment.instructions}`
+                : 'No Instructions'}
+            </div>
+            <div>
+              <strong>Due: </strong>
+              {assignment.due
+                ? `${new Date(assignment.due).toLocaleDateString('en-US')}`
+                : 'No Due Date'}
+            </div>
           </div>
         </div>
       </Container>

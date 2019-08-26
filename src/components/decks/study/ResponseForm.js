@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useMutation } from '@apollo/react-hooks';
+import { CREATE_RESPONSE } from '../../queries/Response';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,13 +18,28 @@ const useStyles = makeStyles(theme => ({
     display: 'block'
   }
 }));
-const ResponseForm = () => {
+const ResponseForm = ({ handleSubmit, savedAnswer }) => {
+  const [answer, setAnswer] = useState(savedAnswer);
+  // const [createResponse] = useMutation(CREATE_RESPONSE, {
+  //   onCompleted: data => console.log(data),
+  //   onError: err => console.error(err)
+  // });
   const classes = useStyles();
+
+  const onSubmit = e => {
+    e.preventDefault();
+    handleSubmit(answer);
+  };
+  const disabled = !!savedAnswer;
   return (
     <div className={classes.root}>
-      <form>
+      <form onSubmit={onSubmit} disabled={disabled}>
         <TextField
           className={classes.field}
+          required
+          disabled={disabled}
+          value={answer}
+          onChange={e => setAnswer(e.target.value)}
           variant="outlined"
           multiline
           label="Your Answer"
@@ -30,6 +47,7 @@ const ResponseForm = () => {
         />
         <Button
           className={classes.submit}
+          disabled={disabled}
           type="submit"
           variant="contained"
           color="primary"

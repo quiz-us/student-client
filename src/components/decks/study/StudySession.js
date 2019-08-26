@@ -48,7 +48,10 @@ const StudySession = ({ match, currentStudent }) => {
     <div className={classes.root}>
       <StudySessionDetails assignment={assignment} />
       <main className={classes.content}>
-        <QuestionDisplay currentQuestion={currentQuestion} />
+        <QuestionDisplay
+          currentQuestion={currentQuestion}
+          currentStudent={currentStudent}
+        />
       </main>
     </div>
   );

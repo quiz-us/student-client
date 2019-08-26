@@ -32,6 +32,7 @@ export const GET_ASSIGNMENT = gql`
           questionOptions {
             optionNode
             correct
+            id
           }
         }
       }
