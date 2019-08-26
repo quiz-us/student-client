@@ -19,6 +19,7 @@ export const GET_ASSIGNMENT = gql`
     assignment(assignmentId: $assignmentId, studentId: $studentId) {
       instructions
       id
+      due
       deck {
         name
         description

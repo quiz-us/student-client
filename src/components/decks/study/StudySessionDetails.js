@@ -3,6 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+import Container from '@material-ui/core/Container';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForwardIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,10 +26,22 @@ const useStyles = makeStyles(theme => ({
     top: '50%',
     left: '-5px',
     background: theme.palette.secondary.main
+  },
+  topContainer: {},
+  bottomContainer: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  details: {
+    margin: '40px 0'
+  },
+  progress: {
+    margin: '40px auto 20px auto'
   }
 }));
 
-const StudySessionDetails = () => {
+const StudySessionDetails = ({ assignment }) => {
+  const { deck } = assignment;
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -40,23 +53,41 @@ const StudySessionDetails = () => {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <div>
-        <div>Name: Deck Name</div>
-        <div>Description: Deck Description</div>
-        <div>Instructions: Instructions</div>
-        <div>Due Date: Due Date</div>
-      </div>
+      <Container className={classes.topContainer}>
+        <div className={classes.details}>
+          <h3>Deck Name</h3>
+          <div>
+            <strong>Description: </strong>
+            {deck.description ? `${deck.description}` : 'No Description'}
+          </div>
+          <div>
+            <strong>Instructions: </strong>{' '}
+            {assignment.instructions
+              ? `${assignment.instructions}`
+              : 'No Instructions'}
+          </div>
+          <div>
+            <strong>Due: </strong>
+            {assignment.due
+              ? `${new Date(assignment.due).toLocaleDateString('en-US')}`
+              : 'No Due Date'}
+          </div>
+        </div>
+      </Container>
+
       <Divider />
-      <div>
+
+      <Container className={classes.bottomContainer}>
         <CircularProgress
+          className={classes.progress}
           variant="determinate"
           color="secondary"
           thickness={7}
           size={150}
           value={70}
         />
-        Progress 7/10
-      </div>
+        <div>Progress 7/10</div>
+      </Container>
     </div>
   );
 
