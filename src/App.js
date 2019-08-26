@@ -41,7 +41,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Nav currentStudent={currentStudent} />
-      {currentStudent ? <Home /> : <LogIn />}
+      {currentStudent ? <Home currentStudent={currentStudent} /> : <LogIn />}
     </React.Fragment>
   );
 };
