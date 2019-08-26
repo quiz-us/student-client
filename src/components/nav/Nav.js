@@ -24,7 +24,8 @@ const useStyles = makeStyles(theme => ({
   },
   white: {
     color: 'white'
-  }
+  },
+  toolbar: theme.mixins.toolbar
 }));
 
 export default function Nav({ currentStudent = {} }) {
@@ -75,6 +76,7 @@ export default function Nav({ currentStudent = {} }) {
           )}
         </Toolbar>
       </AppBar>
+      <div className={classes.toolbar} />
     </div>
   );
 }
