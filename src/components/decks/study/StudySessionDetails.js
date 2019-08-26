@@ -10,8 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth
+    }
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -25,8 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function StudySessionDetails(props) {
-  const { container } = props;
+const StudySessionDetails = () => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -59,8 +60,7 @@ function StudySessionDetails(props) {
   );
 
   return (
-    <div className={classes.root}>
-      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+    <nav className={classes.drawer}>
       <Hidden smUp>
         <IconButton
           className={classes.drawerOpen}
@@ -70,7 +70,6 @@ function StudySessionDetails(props) {
           <ArrowForwardIcon fontSize="small" />
         </IconButton>
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -95,8 +94,8 @@ function StudySessionDetails(props) {
           {drawer}
         </Drawer>
       </Hidden>
-    </div>
+    </nav>
   );
-}
+};
 
 export default StudySessionDetails;
