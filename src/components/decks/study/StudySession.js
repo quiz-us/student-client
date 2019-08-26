@@ -10,6 +10,7 @@ const StudySession = ({ match }) => {
     variables: { assignmentId }
   });
   console.log(data);
+  console.log('loading', loading);
   return (
     <div>
       <StudySessionDetails />
