@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { ReactComponent as Logo } from '../../assets/quizus.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +26,10 @@ const useStyles = makeStyles(theme => ({
   white: {
     color: 'white'
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
+  logo: {
+    width: 150
+  }
 }));
 
 export default function Nav({ currentStudent = {} }) {
@@ -47,7 +51,7 @@ export default function Nav({ currentStudent = {} }) {
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <Link className={classes.white} to="/">
-              Quiz Us
+              <Logo className={classes.logo} />
             </Link>
           </Typography>
           {currentStudent && (
