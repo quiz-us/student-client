@@ -8,7 +8,9 @@ import Collapse from '@material-ui/core/Collapse';
 import ReadOnly from './ReadOnly';
 import ResponseForm from './ResponseForm';
 import { CREATE_RESPONSE } from '../../queries/Response';
+import { GET_ASSIGNMENT } from '../../queries/Assignment';
 import { useMutation } from '@apollo/react-hooks';
+import { Map } from 'immutable';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +36,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const QuestionDisplay = ({ currentQuestion, currentStudent, assignmentId }) => {
+const QuestionDisplay = ({
+  currentQuestion,
+  currentStudent,
+  assignmentId,
+  numResponses
+}) => {
   const localKey = `QU_PERSISTED_ASSIGNMENT_${assignmentId}_STUDENT_${currentStudent.id}_QUESTION${currentQuestion.id}`;
   const persistedAnswer = localStorage.getItem(localKey) || '';
   const classes = useStyles();
@@ -44,6 +51,34 @@ const QuestionDisplay = ({ currentQuestion, currentStudent, assignmentId }) => {
     onCompleted: data => {
       localStorage.removeItem(localKey);
       console.log(data);
+    },
+    update(
+      cache,
+      {
+        data: { createResponse }
+      }
+    ) {
+      const { assignment } = cache.readQuery({
+        query: GET_ASSIGNMENT,
+        variables: {
+          assignmentId,
+          studentId: currentStudent.id
+        }
+      });
+
+      const updatedResponses = assignment.responses.concat([createResponse]);
+      const immutableAssignment = Map(assignment);
+      // needs to be a deep clone in order to trigger parent UI update:
+      const updatedAssignment = immutableAssignment.toObject();
+      updatedAssignment.responses = updatedResponses;
+      cache.writeQuery({
+        query: GET_ASSIGNMENT,
+        variables: {
+          assignmentId,
+          studentId: currentStudent.id
+        },
+        data: { assignment: updatedAssignment }
+      });
     },
     onError: err => console.error(err)
   });
@@ -72,10 +107,12 @@ const QuestionDisplay = ({ currentQuestion, currentStudent, assignmentId }) => {
     };
     // clear localStorage of persisted answer here
   };
+
+  const currentQuestionNumber = numResponses + 1;
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
-        <CardHeader title="Question" />
+        <CardHeader title={`Question #${currentQuestionNumber}`} />
         <CardContent>
           <ReadOnly value={JSON.parse(questionNode)} />
           <ResponseForm handleSubmit={handleSubmit} savedAnswer={savedAnswer} />

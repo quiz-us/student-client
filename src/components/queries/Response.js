@@ -17,10 +17,8 @@ export const CREATE_RESPONSE = gql`
       questionType: $questionType
       selfGrade: $selfGrade
     ) {
+      id
       questionId
-      assignmentId
-      responseText
-      questionOptionId
     }
   }
 `;

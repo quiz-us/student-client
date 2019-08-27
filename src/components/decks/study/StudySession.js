@@ -43,20 +43,27 @@ const StudySession = ({ match, currentStudent }) => {
   // find the first question that had not already been answered:
   const currentQuestion = questions.find(({ id }) => !answeredQuestions[id]);
   console.log(currentQuestion);
-
+  const numResponses = responses.length;
+  const done = numResponses === questions.length;
   return (
     <div className={classes.root}>
       <StudySessionDetails
         assignment={assignment}
-        numResponses={responses.length}
+        numResponses={numResponses}
         numQuestions={questions.length}
       />
       <main className={classes.content}>
-        <QuestionDisplay
-          currentQuestion={currentQuestion}
-          currentStudent={currentStudent}
-          assignmentId={assignment.id}
-        />
+        {done ? (
+          <div>you're done! nice work!</div>
+        ) : (
+          <QuestionDisplay
+            key={`current-question-${currentQuestion.id}`}
+            currentQuestion={currentQuestion}
+            currentStudent={currentStudent}
+            numResponses={numResponses}
+            assignmentId={assignment.id}
+          />
+        )}
       </main>
     </div>
   );
