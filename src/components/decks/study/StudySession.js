@@ -46,7 +46,11 @@ const StudySession = ({ match, currentStudent }) => {
 
   return (
     <div className={classes.root}>
-      <StudySessionDetails assignment={assignment} />
+      <StudySessionDetails
+        assignment={assignment}
+        numResponses={responses.length}
+        numQuestions={questions.length}
+      />
       <main className={classes.content}>
         <QuestionDisplay
           currentQuestion={currentQuestion}

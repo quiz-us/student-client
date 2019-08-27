@@ -40,10 +40,13 @@ const useStyles = makeStyles(theme => ({
   },
   progress: {
     margin: '40px auto 20px auto'
+  },
+  progressHeader: {
+    textAlign: 'center'
   }
 }));
 
-const StudySessionDetails = ({ assignment }) => {
+const StudySessionDetails = ({ assignment, numQuestions, numResponses }) => {
   const { deck } = assignment;
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -85,13 +88,15 @@ const StudySessionDetails = ({ assignment }) => {
       <Container className={classes.bottomContainer}>
         <CircularProgress
           className={classes.progress}
-          variant="determinate"
+          variant="static"
           color="secondary"
           thickness={7}
           size={150}
-          value={70}
+          value={(numResponses / numQuestions) * 100}
         />
-        <div>Progress 7/10</div>
+        <h3 className={classes.progressHeader}>
+          Progress: {`${numResponses}/${numQuestions}`}
+        </h3>
       </Container>
     </div>
   );
