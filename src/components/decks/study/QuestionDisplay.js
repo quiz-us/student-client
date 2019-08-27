@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
 import ReadOnly from './ReadOnly';
 import ResponseForm from './ResponseForm';
+import { CREATE_RESPONSE } from '../../queries/Response';
+import { useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,15 +18,35 @@ const useStyles = makeStyles(theme => ({
   card: {
     width: '85%',
     marginTop: '25px'
+  },
+  ratings: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
+  },
+  rating: {
+    width: '15%',
+    [theme.breakpoints.down('sm')]: {
+      width: '30%'
+    },
+    marginBottom: '20px'
   }
 }));
 
-const QuestionDisplay = ({ currentQuestion, currentStudent }) => {
-  const localKey = `QU_PERSISTED_STUDENT${currentStudent.id}_QUESTION${currentQuestion.id}`;
+const QuestionDisplay = ({ currentQuestion, currentStudent, assignmentId }) => {
+  const localKey = `QU_PERSISTED_ASSIGNMENT_${assignmentId}_STUDENT_${currentStudent.id}_QUESTION${currentQuestion.id}`;
   const persistedAnswer = localStorage.getItem(localKey) || '';
   const classes = useStyles();
   const [savedAnswer, setSavedAnswer] = useState(persistedAnswer);
   const [expanded, setExpanded] = useState(!!savedAnswer);
+  const [createResponse] = useMutation(CREATE_RESPONSE, {
+    onCompleted: data => {
+      localStorage.removeItem(localKey);
+      console.log(data);
+    },
+    onError: err => console.error(err)
+  });
 
   const handleSubmit = answer => {
     localStorage.setItem(localKey, answer);
@@ -32,11 +54,24 @@ const QuestionDisplay = ({ currentQuestion, currentStudent }) => {
     setExpanded(true);
   };
 
-  const submitResponse = () => {
+  const { questionNode, questionOptions, questionType } = currentQuestion;
+  const submitFreeResponse = selfGrade => {
+    return () => {
+      const { id: questionId } = currentQuestion;
+
+      createResponse({
+        variables: {
+          questionId,
+          assignmentId,
+          responseText: savedAnswer,
+          questionOptionId: questionOptions[0].id,
+          selfGrade: parseInt(selfGrade, 10),
+          questionType
+        }
+      });
+    };
     // clear localStorage of persisted answer here
   };
-
-  const { questionNode, questionOptions } = currentQuestion;
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
@@ -58,19 +93,24 @@ const QuestionDisplay = ({ currentQuestion, currentStudent }) => {
                 );
               }
             })}
-            <h4>Rate how well you did (1 = bad; 4 = perfect)</h4>
-            <Button variant="contained" color="primary">
-              1
-            </Button>
-            <Button variant="contained" color="primary">
-              2
-            </Button>
-            <Button variant="contained" color="primary">
-              3
-            </Button>
-            <Button variant="contained" color="primary">
-              4
-            </Button>
+          </CardContent>
+          <CardContent>
+            <h4>How well did you do? (0 = didn't know it; 5 = perfect!)</h4>
+            <div className={classes.ratings}>
+              {[0, 1, 2, 3, 4, 5].map(rating => {
+                return (
+                  <Button
+                    className={classes.rating}
+                    onClick={submitFreeResponse(rating)}
+                    key={`rating-${rating}`}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    {rating}
+                  </Button>
+                );
+              })}
+            </div>
           </CardContent>
         </Collapse>
       </Card>

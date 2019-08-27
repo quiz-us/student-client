@@ -3,15 +3,19 @@ import gql from 'graphql-tag';
 export const CREATE_RESPONSE = gql`
   mutation createResponse(
     $questionId: ID!
-    $assignmentID: ID
+    $assignmentId: ID
     $responseText: String
     $questionOptionId: ID
+    $questionType: String!
+    $selfGrade: Int
   ) {
     createResponse(
       questionId: $questionId
       assignmentId: $assignmentId
-      reaponseText: $responseText
+      responseText: $responseText
       questionOptionId: $questionOptionId
+      questionType: $questionType
+      selfGrade: $selfGrade
     ) {
       questionId
       assignmentId

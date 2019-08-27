@@ -51,6 +51,7 @@ const StudySession = ({ match, currentStudent }) => {
         <QuestionDisplay
           currentQuestion={currentQuestion}
           currentStudent={currentStudent}
+          assignmentId={assignment.id}
         />
       </main>
     </div>

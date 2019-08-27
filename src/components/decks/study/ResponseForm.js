@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useMutation } from '@apollo/react-hooks';
-import { CREATE_RESPONSE } from '../../queries/Response';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,10 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 const ResponseForm = ({ handleSubmit, savedAnswer }) => {
   const [answer, setAnswer] = useState(savedAnswer);
-  // const [createResponse] = useMutation(CREATE_RESPONSE, {
-  //   onCompleted: data => console.log(data),
-  //   onError: err => console.error(err)
-  // });
+
   const classes = useStyles();
 
   const onSubmit = e => {
