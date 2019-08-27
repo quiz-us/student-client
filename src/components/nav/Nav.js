@@ -28,7 +28,9 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: theme.mixins.toolbar,
   logo: {
-    width: 150
+    width: 120,
+    top: '5px',
+    position: 'relative'
   }
 }));
 
