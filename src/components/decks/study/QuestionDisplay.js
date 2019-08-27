@@ -11,6 +11,7 @@ import { CREATE_RESPONSE } from '../../queries/Response';
 import { GET_ASSIGNMENT } from '../../queries/Assignment';
 import { useMutation } from '@apollo/react-hooks';
 import { Map } from 'immutable';
+import MultipleChoiceResponse from './MultipleChoiceResponse';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -108,6 +109,23 @@ const QuestionDisplay = ({
     // clear localStorage of persisted answer here
   };
 
+  const renderResponseArea = () => {
+    switch (questionType) {
+      case 'Free Response':
+        return (
+          <ResponseForm handleSubmit={handleSubmit} savedAnswer={savedAnswer} />
+        );
+      case 'Multiple Choice':
+        return (
+          <MultipleChoiceResponse
+            questionOptions={currentQuestion.questionOptions}
+          />
+        );
+      default:
+        return <div>That Question Type is not supported!</div>;
+    }
+  };
+
   const currentQuestionNumber = numResponses + 1;
   return (
     <div className={classes.root}>
@@ -115,7 +133,7 @@ const QuestionDisplay = ({
         <CardHeader title={`Question #${currentQuestionNumber}`} />
         <CardContent>
           <ReadOnly value={JSON.parse(questionNode)} />
-          <ResponseForm handleSubmit={handleSubmit} savedAnswer={savedAnswer} />
+          {renderResponseArea()}
         </CardContent>
         <Collapse in={expanded} unmountOnExit>
           <CardHeader title="Correct Answer" />
@@ -129,6 +147,7 @@ const QuestionDisplay = ({
                   />
                 );
               }
+              return null;
             })}
           </CardContent>
           <CardContent>
