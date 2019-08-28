@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
@@ -59,7 +60,8 @@ export default function Nav({ currentStudent = {} }) {
           {currentStudent && (
             <React.Fragment>
               <Button
-                color="inherit"
+                color="secondary"
+                variant="contained"
                 onClick={handleClick}
               >{`${firstName} ${lastName}`}</Button>
               <Menu
@@ -73,6 +75,10 @@ export default function Nav({ currentStudent = {} }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem onClick={handleClose}>
+                  <BookmarksIcon className={classes.menuIcon} />
+                  Personal Deck
+                </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <ExitToAppIcon className={classes.menuIcon} />
                   Logout
