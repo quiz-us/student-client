@@ -9,7 +9,7 @@ import ReadOnly from './ReadOnly';
 import ResponseForm from './ResponseForm';
 import { CREATE_RESPONSE } from '../../queries/Response';
 import { GET_ASSIGNMENT } from '../../queries/Assignment';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Map } from 'immutable';
 import MultipleChoiceResponse from './MultipleChoiceResponse';
 
@@ -34,6 +34,10 @@ const useStyles = makeStyles(theme => ({
       width: '30%'
     },
     marginBottom: '20px'
+  },
+  mcBottom: {
+    display: 'flex',
+    justifyContent: 'flex-end'
   }
 }));
 
@@ -46,55 +50,78 @@ const QuestionDisplay = ({
   const localKey = `QU_PERSISTED_ASSIGNMENT_${assignmentId}_STUDENT_${currentStudent.id}_QUESTION${currentQuestion.id}`;
   const persistedAnswer = localStorage.getItem(localKey) || '';
   const classes = useStyles();
+  const client = useApolloClient();
   const [savedAnswer, setSavedAnswer] = useState(persistedAnswer);
   const [expanded, setExpanded] = useState(!!savedAnswer);
-  const [createResponse] = useMutation(CREATE_RESPONSE, {
+  const {
+    richText,
+    questionOptions,
+    questionType,
+    id: questionId
+  } = currentQuestion;
+
+  const updateCache = (cache, { createResponse }) => {
+    const { assignment } = cache.readQuery({
+      query: GET_ASSIGNMENT,
+      variables: {
+        assignmentId,
+        studentId: currentStudent.id
+      }
+    });
+    const updatedResponses = assignment.responses.concat([createResponse]);
+    const immutableAssignment = Map(assignment);
+    // needs to be a deep clone in order to trigger parent UI update:
+    const updatedAssignment = immutableAssignment.toObject();
+    updatedAssignment.responses = updatedResponses;
+    cache.writeQuery({
+      query: GET_ASSIGNMENT,
+      variables: {
+        assignmentId,
+        studentId: currentStudent.id
+      },
+      data: { assignment: updatedAssignment }
+    });
+  };
+
+  const [createResponse, { data: mcResponse }] = useMutation(CREATE_RESPONSE, {
     onCompleted: data => {
       localStorage.removeItem(localKey);
-      console.log(data);
     },
-    update(
-      cache,
-      {
-        data: { createResponse }
+    update: (cache, res) => {
+      if (questionType === 'Free Response') {
+        updateCache(cache, res.data);
       }
-    ) {
-      const { assignment } = cache.readQuery({
-        query: GET_ASSIGNMENT,
-        variables: {
-          assignmentId,
-          studentId: currentStudent.id
-        }
-      });
-
-      const updatedResponses = assignment.responses.concat([createResponse]);
-      const immutableAssignment = Map(assignment);
-      // needs to be a deep clone in order to trigger parent UI update:
-      const updatedAssignment = immutableAssignment.toObject();
-      updatedAssignment.responses = updatedResponses;
-      cache.writeQuery({
-        query: GET_ASSIGNMENT,
-        variables: {
-          assignmentId,
-          studentId: currentStudent.id
-        },
-        data: { assignment: updatedAssignment }
-      });
     },
     onError: err => console.error(err)
   });
 
-  const handleSubmit = answer => {
+  const delayedUpdate = () => {
+    updateCache(client, mcResponse);
+  };
+
+  const handleFRSubmit = answer => {
     localStorage.setItem(localKey, answer);
     setSavedAnswer(answer);
     setExpanded(true);
   };
 
-  const { richText, questionOptions, questionType } = currentQuestion;
+  const handleMCSubmit = questionOptionId => {
+    setExpanded(true);
+    setSavedAnswer(questionOptionId);
+    createResponse({
+      variables: {
+        questionId,
+        assignmentId,
+        responseText: null,
+        questionOptionId,
+        selfGrade: null,
+        questionType
+      }
+    });
+  };
+
   const submitFreeResponse = selfGrade => {
     return () => {
-      const { id: questionId } = currentQuestion;
-
       createResponse({
         variables: {
           questionId,
@@ -113,16 +140,57 @@ const QuestionDisplay = ({
     switch (questionType) {
       case 'Free Response':
         return (
-          <ResponseForm handleSubmit={handleSubmit} savedAnswer={savedAnswer} />
+          <ResponseForm
+            handleSubmit={handleFRSubmit}
+            savedAnswer={savedAnswer}
+          />
         );
       case 'Multiple Choice':
         return (
           <MultipleChoiceResponse
+            key={`mcQuestion-${currentQuestion.id}`}
+            handleSubmit={handleMCSubmit}
             questionOptions={currentQuestion.questionOptions}
           />
         );
       default:
         return <div>That Question Type is not supported!</div>;
+    }
+  };
+
+  const renderCollapsibleBottom = () => {
+    switch (questionType) {
+      case 'Free Response':
+        return (
+          <React.Fragment>
+            <h4>How well did you do? (0 = didn't know it; 5 = perfect!)</h4>
+            <div className={classes.ratings}>
+              {[0, 1, 2, 3, 4, 5].map(rating => {
+                return (
+                  <Button
+                    className={classes.rating}
+                    onClick={submitFreeResponse(rating)}
+                    key={`rating-${rating}`}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    {rating}
+                  </Button>
+                );
+              })}
+            </div>
+          </React.Fragment>
+        );
+      case 'Multiple Choice':
+        return (
+          <div className={classes.mcBottom}>
+            <Button color="primary" variant="contained" onClick={delayedUpdate}>
+              Next Question
+            </Button>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
@@ -150,24 +218,7 @@ const QuestionDisplay = ({
               return null;
             })}
           </CardContent>
-          <CardContent>
-            <h4>How well did you do? (0 = didn't know it; 5 = perfect!)</h4>
-            <div className={classes.ratings}>
-              {[0, 1, 2, 3, 4, 5].map(rating => {
-                return (
-                  <Button
-                    className={classes.rating}
-                    onClick={submitFreeResponse(rating)}
-                    key={`rating-${rating}`}
-                    variant="contained"
-                    color="secondary"
-                  >
-                    {rating}
-                  </Button>
-                );
-              })}
-            </div>
-          </CardContent>
+          <CardContent>{renderCollapsibleBottom()}</CardContent>
         </Collapse>
       </Card>
     </div>

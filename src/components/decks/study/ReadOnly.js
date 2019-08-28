@@ -33,6 +33,7 @@ const styles = {
   editor: {
     fontFamily: "'Roboto', sans-serif",
     lineHeight: 1.2,
+    fontSize: '16px',
     padding: '15px'
   },
   icon: {
@@ -46,11 +47,11 @@ class ReadOnly extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, editorClass } = this.props;
     return (
       <div className={classes.root}>
         <Editor
-          className={classes.editor}
+          className={`${classes.editor} ${editorClass}`}
           value={this.state.value}
           renderBlock={this.renderBlock}
           renderMark={this.renderMark}
