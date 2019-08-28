@@ -28,9 +28,9 @@ export const GET_ASSIGNMENT = gql`
           questionText
           id
           questionType
-          questionNode
+          richText
           questionOptions {
-            optionNode
+            richText
             correct
             id
           }

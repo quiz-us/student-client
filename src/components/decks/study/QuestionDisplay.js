@@ -90,7 +90,7 @@ const QuestionDisplay = ({
     setExpanded(true);
   };
 
-  const { questionNode, questionOptions, questionType } = currentQuestion;
+  const { richText, questionOptions, questionType } = currentQuestion;
   const submitFreeResponse = selfGrade => {
     return () => {
       const { id: questionId } = currentQuestion;
@@ -132,7 +132,7 @@ const QuestionDisplay = ({
       <Card className={classes.card}>
         <CardHeader title={`Question #${currentQuestionNumber}`} />
         <CardContent>
-          <ReadOnly value={JSON.parse(questionNode)} />
+          <ReadOnly value={JSON.parse(richText)} />
           {renderResponseArea()}
         </CardContent>
         <Collapse in={expanded} unmountOnExit>
@@ -143,7 +143,7 @@ const QuestionDisplay = ({
                 return (
                   <ReadOnly
                     key={`answer-${answer.id}`}
-                    value={JSON.parse(answer.optionNode)}
+                    value={JSON.parse(answer.richText)}
                   />
                 );
               }

@@ -92,7 +92,7 @@ const StudySessionDetails = ({ assignment, numQuestions, numResponses }) => {
           color="secondary"
           thickness={7}
           size={150}
-          value={(numResponses / numQuestions) * 100}
+          value={(numResponses / numQuestions) * 100 || 5}
         />
         <h3 className={classes.progressHeader}>
           Progress: {`${numResponses}/${numQuestions} completed`}

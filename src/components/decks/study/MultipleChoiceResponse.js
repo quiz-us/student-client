@@ -18,13 +18,13 @@ const MultipleChoiceResponse = ({ questionOptions }) => {
     <div>
       <h3>Choose the correct answer:</h3>
       {shuffle(questionOptions).map(answerChoice => {
-        const { id, optionNode } = answerChoice;
+        const { id, richText } = answerChoice;
         return (
           <CardActionArea
             key={`answerchoice-${id}`}
             className={classes.multipleChoice}
           >
-            <ReadOnly value={JSON.parse(optionNode)} />
+            <ReadOnly value={JSON.parse(richText)} />
           </CardActionArea>
         );
       })}
