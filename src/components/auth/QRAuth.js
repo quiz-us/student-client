@@ -22,7 +22,7 @@ const QRAuth = () => {
       const { token } = qrLogInStudent;
       if (token) {
         localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
-          window.location.reload(false);
+          window.location.reload(true);
         });
       }
     }
