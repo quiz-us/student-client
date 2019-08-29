@@ -11,6 +11,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import QRAuth from './QRAuth';
 
 const styles = theme => {
   return {
@@ -41,6 +42,9 @@ const styles = theme => {
     },
     submitButton: {
       marginTop: '30px'
+    },
+    loginType: {
+      marginTop: '20px'
     }
   };
 };
@@ -58,6 +62,7 @@ const Login = ({ classes }) => {
     message: '',
     title: ''
   });
+  const [loginType, setLoginType] = useState('email');
 
   const { open, message, title } = dialogState;
   const [createLoginLink, { loading }] = useMutation(CREATE_LOGIN_LINK, {
@@ -103,9 +108,9 @@ const Login = ({ classes }) => {
     });
   };
 
-  return (
-    <div className={classes.root}>
-      <Card className={classes.formContainer}>
+  const renderLogin = () => {
+    if (loginType === 'email') {
+      return (
         <form className={classes.form} onSubmit={handleSubmit}>
           <h3>Enter email:</h3>
           <TextField
@@ -129,6 +134,25 @@ const Login = ({ classes }) => {
             </Button>
           )}
         </form>
+      );
+    } else if (loginType === 'qr') {
+      return <QRAuth />;
+    }
+    return null;
+  };
+
+  return (
+    <div className={classes.root}>
+      <Card className={classes.formContainer}>
+        {renderLogin()}
+        <Button
+          onClick={() => setLoginType('qr')}
+          className={classes.loginType}
+          color="secondary"
+          variant="contained"
+        >
+          Use QR Login
+        </Button>
       </Card>
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="md">
         <DialogTitle>{title}</DialogTitle>

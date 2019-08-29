@@ -47,7 +47,6 @@ export default function Nav({ currentStudent = {} }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
@@ -57,7 +56,7 @@ export default function Nav({ currentStudent = {} }) {
               <Logo className={classes.logo} />
             </Link>
           </Typography>
-          {currentStudent && (
+          {currentStudent.firstName && (
             <React.Fragment>
               <Button
                 color="secondary"

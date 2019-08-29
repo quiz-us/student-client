@@ -9,7 +9,7 @@ import teal from '@material-ui/core/colors/teal';
 import amber from '@material-ui/core/colors/amber';
 import { useQuery } from '@apollo/react-hooks';
 import Auth from './components/auth/Auth';
-import gql from 'graphql-tag';
+import { GET_CURRENT_STUDENT } from './components/queries/Student';
 import GlobalLoader from './components/app/GlobalLoader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -19,17 +19,6 @@ const theme = createMuiTheme({
     secondary: amber
   }
 });
-
-const GET_CURRENT_STUDENT = gql`
-  {
-    currentStudent {
-      firstName
-      lastName
-      email
-      id
-    }
-  }
-`;
 
 const App = () => {
   const { data, loading } = useQuery(GET_CURRENT_STUDENT);

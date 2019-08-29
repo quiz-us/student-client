@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react';
 import localforage from 'localforage';
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-
-const LOG_IN = gql`
-  mutation logInStudent($token: String!) {
-    logInStudent(token: $token) {
-      token
-    }
-  }
-`;
+import { LOG_IN } from '../queries/Student';
 
 export default ({ location: { search }, history }) => {
   const [logInStudent, { loading, error }] = useMutation(LOG_IN, {
