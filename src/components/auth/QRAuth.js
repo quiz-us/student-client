@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import QrReader from 'react-qr-reader';
 import localforage from 'localforage';
 import { useMutation } from '@apollo/react-hooks';
-import { QR_LOG_IN, GET_CURRENT_STUDENT } from '../queries/Student';
+import { QR_LOG_IN } from '../queries/Student';
 import GlobalLoader from '../app/GlobalLoader';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+const useStyles = makeStyles({
+  noProgress: {
+    height: '4px'
+  }
+});
 
 const QRAuth = () => {
+  const classes = useStyles();
+  const [scanning, setScanning] = useState(false);
   const [qrLogInStudent, { loading, error }] = useMutation(QR_LOG_IN, {
     onError: err => console.error('ERROR', err),
-    update: (cache, { data: { qrLogInStudent } }) => {
-      const { token, ...currentStudent } = qrLogInStudent;
+    onCompleted: ({ qrLogInStudent }) => {
+      const { token } = qrLogInStudent;
       if (token) {
         localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
-          cache.writeQuery({
-            query: GET_CURRENT_STUDENT,
-            data: { currentStudent: currentStudent }
-          });
+          window.location.reload(false);
         });
       }
     }
@@ -29,20 +36,25 @@ const QRAuth = () => {
     console.error(error);
   };
   const handleScan = data => {
-    console.log(data);
     if (data) {
-      console.log('HERE', data);
       qrLogInStudent({ variables: { qrCode: data } });
     }
   };
+
+  const onLoad = () => setScanning(true);
+
   return (
     <div>
       <QrReader
         delay={300}
+        onLoad={onLoad}
         onError={handleError}
         onScan={handleScan}
         style={{ width: '100%' }}
       />
+      <div>
+        {scanning ? <LinearProgress /> : <div className={classes.noProgress} />}
+      </div>
     </div>
   );
 };

@@ -108,6 +108,14 @@ const Login = ({ classes }) => {
     });
   };
 
+  const toggleType = () => {
+    if (loginType === 'email') {
+      setLoginType('qr');
+    } else {
+      setLoginType('email');
+    }
+  };
+
   const renderLogin = () => {
     if (loginType === 'email') {
       return (
@@ -140,18 +148,18 @@ const Login = ({ classes }) => {
     }
     return null;
   };
-
+  const typeText = loginType === 'qr' ? 'Email' : 'QR';
   return (
     <div className={classes.root}>
       <Card className={classes.formContainer}>
         {renderLogin()}
         <Button
-          onClick={() => setLoginType('qr')}
+          onClick={toggleType}
           className={classes.loginType}
           color="secondary"
           variant="contained"
         >
-          Use QR Login
+          {`Use ${typeText} Login`}
         </Button>
       </Card>
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="md">
