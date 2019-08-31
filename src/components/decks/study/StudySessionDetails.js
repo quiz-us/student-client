@@ -46,7 +46,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const StudySessionDetails = ({ assignment, numQuestions, numResponses }) => {
+const StudySessionDetails = ({
+  assignment,
+  numQuestions = 0,
+  numResponses = 0
+}) => {
   const { deck } = assignment;
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);

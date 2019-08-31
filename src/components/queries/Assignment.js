@@ -43,3 +43,30 @@ export const GET_ASSIGNMENT = gql`
     }
   }
 `;
+
+export const GET_PERSONAL_ASSIGNMENT = gql`
+  query getPersonalAssignment {
+    personalAssignment {
+      instructions
+      deck {
+        id
+        name
+        description
+        cards {
+          nextDue
+          question {
+            questionText
+            id
+            questionType
+            richText
+            questionOptions {
+              richText
+              correct
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;

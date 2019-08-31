@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import DeckIndex from '../decks/DeckIndex';
 import StudySession from '../decks/study/StudySession';
+import PersonalAssignment from '../decks/personal/PersonalAssignmentContainer';
 
 export default ({ currentStudent }) => {
   return (
@@ -14,6 +15,7 @@ export default ({ currentStudent }) => {
           <StudySession currentStudent={currentStudent} {...props} />
         )}
       />
+      <Route exact path="/personal-deck" component={PersonalAssignment} />
       <Route exact path="/fun" component={() => <div>decks</div>} />
     </React.Fragment>
   );

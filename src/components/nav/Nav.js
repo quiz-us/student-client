@@ -74,10 +74,12 @@ export default function Nav({ currentStudent = {} }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>
-                  <BookmarksIcon className={classes.menuIcon} />
-                  Personal Deck
-                </MenuItem>
+                <Link to="/personal-deck">
+                  <MenuItem onClick={handleClose}>
+                    <BookmarksIcon className={classes.menuIcon} />
+                    Personal Deck
+                  </MenuItem>
+                </Link>
                 <MenuItem onClick={handleClose}>
                   <ExitToAppIcon className={classes.menuIcon} />
                   Logout
