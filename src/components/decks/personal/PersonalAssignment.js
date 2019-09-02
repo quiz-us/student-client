@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const StudySession = () => {
+const PersonalAssignment = ({ currentStudent }) => {
   const classes = useStyles();
   const { personalAssignment, dispatch } = useContext(
     PersonalAssignmentContext
@@ -39,6 +39,7 @@ const StudySession = () => {
     }
   );
   useEffect(() => {
+    dispatch({ type: 'loading' });
     getPersonalAssignment();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -59,10 +60,10 @@ const StudySession = () => {
         numQuestions={questions.length}
       />
       <main className={classes.content}>
-        <PersonalQuestion />
+        <PersonalQuestion currentStudent={currentStudent} />
       </main>
     </div>
   );
 };
 
-export default StudySession;
+export default PersonalAssignment;

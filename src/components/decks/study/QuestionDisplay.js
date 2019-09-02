@@ -84,7 +84,7 @@ const QuestionDisplay = ({
   };
 
   const [createResponse, { data: mcResponse }] = useMutation(CREATE_RESPONSE, {
-    onCompleted: data => {
+    onCompleted: () => {
       localStorage.removeItem(localKey);
     },
     update: (cache, res) => {

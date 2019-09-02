@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 }));
 const ResponseForm = ({ handleSubmit, savedAnswer }) => {
   const [answer, setAnswer] = useState(savedAnswer);
-
   const classes = useStyles();
 
   const onSubmit = e => {

@@ -15,7 +15,11 @@ export default ({ currentStudent }) => {
           <StudySession currentStudent={currentStudent} {...props} />
         )}
       />
-      <Route exact path="/personal-deck" component={PersonalAssignment} />
+      <Route
+        exact
+        path="/personal-deck"
+        component={() => <PersonalAssignment currentStudent={currentStudent} />}
+      />
       <Route exact path="/fun" component={() => <div>decks</div>} />
     </React.Fragment>
   );

@@ -1,12 +1,26 @@
 import React, { useReducer } from 'react';
 
 let reducer = (state, action) => {
-  const { type, assignment } = action;
+  const { type, assignment, response } = action;
   switch (type) {
     case 'setInitial':
       return {
         ...state,
-        assignment
+        assignment,
+        loading: false
+      };
+    case 'addResponse':
+      return {
+        ...state,
+        responses: {
+          ...state.responses,
+          [response.questionId]: true
+        }
+      };
+    case 'loading':
+      return {
+        ...state,
+        loading: true
       };
     default:
       return;
@@ -16,7 +30,8 @@ const initialState = {
   assignment: {
     deck: { questions: [] }
   },
-  responses: []
+  responses: {},
+  loading: false
 };
 const PersonalAssignmentContext = React.createContext(initialState);
 
