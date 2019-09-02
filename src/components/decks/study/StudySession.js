@@ -34,7 +34,6 @@ const StudySession = ({ match, currentStudent }) => {
   if (assignmentLoading) {
     return <GlobalLoader />;
   }
-  console.log(assignmentData);
   const { assignment } = assignmentData;
   const { responses, deck } = assignment;
   const answeredQuestions = {};
@@ -42,7 +41,6 @@ const StudySession = ({ match, currentStudent }) => {
   const questions = deck.questions;
   // find the first question that had not already been answered:
   const currentQuestion = questions.find(({ id }) => !answeredQuestions[id]);
-  console.log(currentQuestion);
   const numResponses = responses.length;
   const done = numResponses === questions.length;
   return (

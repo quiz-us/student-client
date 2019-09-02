@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
-import ReadOnly from './ReadOnly';
+import ReadOnly from '../ReadOnly';
 import ResponseForm from './ResponseForm';
 import { CREATE_RESPONSE } from '../../queries/Response';
 import { GET_ASSIGNMENT } from '../../queries/Assignment';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/styles';
-import ReadOnly from './ReadOnly';
+import ReadOnly from '../ReadOnly';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import shuffle from '../../../util/shuffle';
 import { List } from 'immutable';

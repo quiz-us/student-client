@@ -52,18 +52,15 @@ export const GET_PERSONAL_ASSIGNMENT = gql`
         id
         name
         description
-        cards {
-          nextDue
-          question {
-            questionText
-            id
-            questionType
+        questions {
+          questionText
+          id
+          questionType
+          richText
+          questionOptions {
             richText
-            questionOptions {
-              richText
-              correct
-              id
-            }
+            correct
+            id
           }
         }
       }

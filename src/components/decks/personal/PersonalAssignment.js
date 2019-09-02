@@ -1,8 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { PersonalAssignmentContext } from './PersonalAssignmentContext';
 import StudySessionDetails from '../study/StudySessionDetails';
-// import QuestionDisplay from './QuestionDisplay';
+import PersonalQuestion from './PesonalQuestion';
+import { GET_PERSONAL_ASSIGNMENT } from '../../queries/Assignment';
+import { useLazyQuery } from '@apollo/react-hooks';
+import GlobalLoader from '../../app/GlobalLoader';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,15 +26,41 @@ const StudySession = () => {
     PersonalAssignmentContext
   );
 
-  console.log(personalAssignment);
+  const [getPersonalAssignment, { loading }] = useLazyQuery(
+    GET_PERSONAL_ASSIGNMENT,
+    {
+      onCompleted: data => {
+        dispatch({
+          type: 'setInitial',
+          assignment: data.personalAssignment
+        });
+      },
+      variables: {} // necessary due to a bug in react-apllo 3.0.0
+    }
+  );
+  useEffect(() => {
+    getPersonalAssignment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (loading) {
+    return <GlobalLoader />;
+  }
+
+  const { assignment, responses } = personalAssignment;
+  const {
+    deck: { questions }
+  } = assignment;
+  const numResponses = Object.keys(responses).length;
   return (
     <div className={classes.root}>
       <StudySessionDetails
-        assignment={personalAssignment}
-        // numResponses={numResponses}
-        // numQuestions={questions.length}
+        assignment={assignment}
+        numResponses={numResponses}
+        numQuestions={questions.length}
       />
-      <main className={classes.content}></main>
+      <main className={classes.content}>
+        <PersonalQuestion />
+      </main>
     </div>
   );
 };
