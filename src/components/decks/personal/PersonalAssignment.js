@@ -4,7 +4,7 @@ import { PersonalAssignmentContext } from './PersonalAssignmentContext';
 import StudySessionDetails from '../study/StudySessionDetails';
 import PersonalQuestion from './PesonalQuestion';
 import { GET_PERSONAL_ASSIGNMENT } from '../../queries/Assignment';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import GlobalLoader from '../../app/GlobalLoader';
 
 const useStyles = makeStyles(theme => ({
@@ -22,32 +22,32 @@ const useStyles = makeStyles(theme => ({
 
 const PersonalAssignment = ({ currentStudent }) => {
   const classes = useStyles();
+  const client = useApolloClient();
   const { personalAssignment, dispatch } = useContext(
     PersonalAssignmentContext
   );
 
-  const [getPersonalAssignment, { loading }] = useLazyQuery(
-    GET_PERSONAL_ASSIGNMENT,
-    {
-      onCompleted: data => {
+  useEffect(() => {
+    dispatch({ type: 'loading' });
+
+    client
+      .query({
+        query: GET_PERSONAL_ASSIGNMENT,
+        variables: {}
+      })
+      .then(({ data }) => {
         dispatch({
           type: 'setInitial',
           assignment: data.personalAssignment
         });
-      },
-      variables: {} // necessary due to a bug in react-apllo 3.0.0
-    }
-  );
-  useEffect(() => {
-    dispatch({ type: 'loading' });
-    getPersonalAssignment();
+      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const { assignment, responses, loading } = personalAssignment;
   if (loading) {
     return <GlobalLoader />;
   }
-
-  const { assignment, responses } = personalAssignment;
   const {
     deck: { questions }
   } = assignment;
