@@ -30,3 +30,18 @@ export const GET_CURRENT_STUDENT = gql`
     }
   }
 `;
+
+export const GET_CURRENT_LOCAL_STUDENT = gql`
+  {
+    currentStudent @client {
+      firstName
+      lastName
+    }
+  }
+`;
+
+export const LOG_OUT = gql`
+  mutation logOutStuent {
+    logOutStudent
+  }
+`;

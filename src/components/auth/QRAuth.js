@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   }
 });
 
-const QRAuth = () => {
+const QRAuth = ({ history }) => {
   const classes = useStyles();
   const [scanning, setScanning] = useState(false);
   const [qrLogInStudent, { loading, error }] = useMutation(QR_LOG_IN, {
@@ -22,7 +22,7 @@ const QRAuth = () => {
       const { token } = qrLogInStudent;
       if (token) {
         localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
-          window.location.reload(true);
+          history.push('/');
         });
       }
     }

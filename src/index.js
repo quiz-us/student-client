@@ -61,7 +61,8 @@ const link = ApolloLink.from([errorLink, asyncAuthLink, httpLink]);
 
 const client = new ApolloClient({
   link,
-  cache: appCache
+  cache: appCache,
+  resolvers: {}
 });
 
 ReactDOM.render(

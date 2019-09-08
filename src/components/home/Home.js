@@ -1,10 +1,25 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
 import DeckIndex from '../decks/DeckIndex';
 import StudySession from '../decks/study/StudySession';
 import PersonalAssignment from '../decks/personal/PersonalAssignmentContainer';
+import { GET_CURRENT_STUDENT } from '../queries/Student';
+import GlobalLoader from '../app/GlobalLoader';
 
-export default ({ currentStudent }) => {
+export default () => {
+  const {
+    data: { currentStudent },
+    loading
+  } = useQuery(GET_CURRENT_STUDENT);
+
+  if (loading) {
+    return <GlobalLoader />;
+  }
+
+  if (!currentStudent) {
+    return <Redirect to="/login" />;
+  }
   return (
     <React.Fragment>
       <Route exact path="/" component={DeckIndex} />

@@ -55,7 +55,7 @@ const CREATE_LOGIN_LINK = gql`
   }
 `;
 
-const Login = ({ classes }) => {
+const Login = ({ classes, history }) => {
   const [email, setEmail] = useState('');
   const [dialogState, setDialogState] = useState({
     open: false,
@@ -144,7 +144,7 @@ const Login = ({ classes }) => {
         </form>
       );
     } else if (loginType === 'qr') {
-      return <QRAuth />;
+      return <QRAuth history={history} />;
     }
     return null;
   };

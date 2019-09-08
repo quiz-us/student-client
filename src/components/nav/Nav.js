@@ -6,10 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import Button from '@material-ui/core/Button';
+import { useMutation } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
+import { GET_CURRENT_LOCAL_STUDENT } from '../queries/Student';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ReactComponent as Logo } from '../../assets/quizus.svg';
+import { LOG_OUT } from '../queries/Student';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,9 +39,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Nav({ currentStudent = {} }) {
-  const { firstName = '', lastName = '' } = currentStudent;
+export default function Nav({ history }) {
+  const { data = {} } = useQuery(GET_CURRENT_LOCAL_STUDENT);
+  const { firstName, lastName } = data.currentStudent || {};
   const [anchorEl, setAnchorEl] = useState(null);
+  const [logOutStudent] = useMutation(LOG_OUT, {
+    onCompleted: ({ logOutStudent }) => {
+      if (logOutStudent) {
+        history.push('/login');
+      }
+    },
+    onError: err => {
+      console.log(err);
+    }
+  });
+
   const classes = useStyles();
 
   const handleClick = event => {
@@ -46,6 +62,11 @@ export default function Nav({ currentStudent = {} }) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    handleClose();
+    logOutStudent();
   };
   return (
     <div className={classes.root}>
@@ -56,7 +77,7 @@ export default function Nav({ currentStudent = {} }) {
               <Logo className={classes.logo} />
             </Link>
           </Typography>
-          {currentStudent.firstName && (
+          {firstName && (
             <React.Fragment>
               <Button
                 color="secondary"
@@ -80,7 +101,7 @@ export default function Nav({ currentStudent = {} }) {
                     Personal Deck
                   </MenuItem>
                 </Link>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogOut}>
                   <ExitToAppIcon className={classes.menuIcon} />
                   Logout
                 </MenuItem>

@@ -7,10 +7,7 @@ import Home from './components/home/Home';
 import LogIn from './components/auth/LogIn';
 import teal from '@material-ui/core/colors/teal';
 import amber from '@material-ui/core/colors/amber';
-import { useQuery } from '@apollo/react-hooks';
 import Auth from './components/auth/Auth';
-import { GET_CURRENT_STUDENT } from './components/queries/Student';
-import GlobalLoader from './components/app/GlobalLoader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const theme = createMuiTheme({
@@ -20,17 +17,14 @@ const theme = createMuiTheme({
   }
 });
 
-const App = () => {
-  const { data, loading } = useQuery(GET_CURRENT_STUDENT);
-  const currentStudent = data && data.currentStudent;
-  if (loading) {
-    return <GlobalLoader />;
-  }
-
+const App = ({ history }) => {
   return (
     <React.Fragment>
-      <Nav currentStudent={currentStudent} />
-      {currentStudent ? <Home currentStudent={currentStudent} /> : <LogIn />}
+      <Nav history={history} />
+      <Switch>
+        <Route exact path="/login" component={LogIn} />
+        <Route path="/" component={Home} />
+      </Switch>
     </React.Fragment>
   );
 };
