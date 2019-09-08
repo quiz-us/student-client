@@ -16,8 +16,13 @@ const useStyles = makeStyles({
 const QRAuth = ({ history }) => {
   const classes = useStyles();
   const [scanning, setScanning] = useState(false);
-  const [qrLogInStudent, { loading, error }] = useMutation(QR_LOG_IN, {
-    onError: err => console.error('ERROR', err),
+  const [qrLogInStudent, { loading }] = useMutation(QR_LOG_IN, {
+    onError: err => {
+      console.error(err);
+      window.alert(
+        'An error occured. Please refresh and try again or ask your teacher for help.'
+      );
+    },
     onCompleted: ({ qrLogInStudent }) => {
       const { token } = qrLogInStudent;
       if (token) {
