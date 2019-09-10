@@ -19,6 +19,8 @@ export const CREATE_RESPONSE = gql`
     ) {
       id
       questionId
+      mcCorrect
+      selfGrade
     }
   }
 `;

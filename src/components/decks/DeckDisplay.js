@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   },
   content: {
     overflow: 'scroll',
-    maxHeight: '120px'
+    maxHeight: '150px'
   },
   actions: {
     position: 'absolute',
@@ -24,14 +24,22 @@ const useStyles = makeStyles({
 
 const DeckDisplay = ({ assignment }) => {
   const classes = useStyles();
-  const { instructions, deck } = assignment;
+  const {
+    instructions,
+    deck,
+    due,
+    numQuestions,
+    numCorrectResponses
+  } = assignment;
   const { name, description } = deck;
   return (
     <React.Fragment>
       <Card className={classes.card}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {name}
+            {`${name} (${
+              numCorrectResponses >= numQuestions ? 'finished' : 'incomplete'
+            })`}
           </Typography>
           <div className={classes.content}>
             <p>
@@ -41,6 +49,14 @@ const DeckDisplay = ({ assignment }) => {
             <p>
               <strong>Instructions: </strong>
               {instructions ? instructions : 'No Instructions'}
+            </p>
+            <p>
+              <strong>Due: </strong>
+              {due ? new Date(due).toLocaleDateString('en-US') : 'No Due Date'}
+            </p>
+            <p>
+              <strong>Progress: </strong>
+              {`${numCorrectResponses} finished out of ${numQuestions} total questions`}
             </p>
           </div>
         </CardContent>

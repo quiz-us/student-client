@@ -84,9 +84,6 @@ const QuestionDisplay = ({
   };
 
   const [createResponse, { data: mcResponse }] = useMutation(CREATE_RESPONSE, {
-    onCompleted: () => {
-      localStorage.removeItem(localKey);
-    },
     update: (cache, res) => {
       if (questionType === 'Free Response') {
         updateCache(cache, res.data);
@@ -118,6 +115,7 @@ const QuestionDisplay = ({
         questionType
       }
     });
+    localStorage.removeItem(localKey);
   };
 
   const submitFreeResponse = selfGrade => {
@@ -132,6 +130,7 @@ const QuestionDisplay = ({
           questionType
         }
       });
+      localStorage.removeItem(localKey);
     };
     // clear localStorage of persisted answer here
   };

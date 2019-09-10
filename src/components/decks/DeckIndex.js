@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    height: '100vh'
   }
 }));
 const DeckIndex = ({ width }) => {
@@ -34,7 +35,7 @@ const DeckIndex = ({ width }) => {
       <Container>
         <h3>Your Assigned Decks</h3>
         <GridList
-          cellHeight={250}
+          cellHeight={300}
           cols={numColumns}
           className={classes.gridList}
         >

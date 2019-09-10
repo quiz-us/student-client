@@ -5,6 +5,9 @@ export const GET_ASSIGNMENTS = gql`
     studentAssignments {
       instructions
       id
+      numCorrectResponses
+      numQuestions
+      due
       deck {
         name
         description
@@ -39,6 +42,8 @@ export const GET_ASSIGNMENT = gql`
       responses {
         id
         questionId
+        mcCorrect
+        selfGrade
       }
     }
   }
