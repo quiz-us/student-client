@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function Nav({ history }) {
   const { data = {} } = useQuery(GET_CURRENT_LOCAL_STUDENT);
-  const { firstName, lastName } = data.currentStudent || {};
+  const { currentStudent } = data;
+  const { firstName, lastName } = currentStudent || {};
   const [anchorEl, setAnchorEl] = useState(null);
   const [logOutStudent] = useMutation(LOG_OUT, {
     onCompleted: ({ logOutStudent }) => {
