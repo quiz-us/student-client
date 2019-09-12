@@ -44,19 +44,18 @@ const PersonalAssignment = ({ currentStudent }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const { assignment, responses, loading } = personalAssignment;
+  const { assignment, numCorrectResponses, loading } = personalAssignment;
   if (loading) {
     return <GlobalLoader />;
   }
   const {
     deck: { questions }
   } = assignment;
-  const numResponses = Object.keys(responses).length;
   return (
     <div className={classes.root}>
       <StudySessionDetails
         assignment={assignment}
-        numResponses={numResponses}
+        numResponses={numCorrectResponses}
         numQuestions={questions.length}
       />
       <main className={classes.content}>

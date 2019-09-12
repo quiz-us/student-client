@@ -1,27 +1,53 @@
 import React, { useReducer } from 'react';
+import findCurrentQuestion from '../findCurrentQuestion';
 
 let reducer = (state, action) => {
   const { type, assignment, response } = action;
   switch (type) {
-    case 'setInitial':
+    case 'setInitial': {
+      // find current question
+      const {
+        deck: { questions },
+        responses
+      } = assignment;
+      const { currentQuestion, numCorrectResponses } = findCurrentQuestion(
+        responses,
+        questions
+      );
       return {
         ...state,
         assignment,
+        responses,
+        numCorrectResponses,
+        currentQuestion,
         loading: false
       };
-    case 'addResponse':
+    }
+    case 'addResponse': {
+      const {
+        assignment: {
+          deck: { questions }
+        },
+        responses
+      } = state;
+      const updatedResponses = responses.concat([response]);
+      const { currentQuestion, numCorrectResponses } = findCurrentQuestion(
+        updatedResponses,
+        questions
+      );
       return {
         ...state,
-        responses: {
-          ...state.responses,
-          [response.questionId]: true
-        }
+        responses: updatedResponses,
+        currentQuestion,
+        numCorrectResponses
       };
-    case 'loading':
+    }
+    case 'loading': {
       return {
         ...state,
         loading: true
       };
+    }
     default:
       return;
   }
@@ -30,7 +56,9 @@ const initialState = {
   assignment: {
     deck: { questions: [] }
   },
-  responses: {},
+  currentQuestion: {},
+  numCorrectResponses: 0,
+  responses: [],
   loading: false
 };
 const PersonalAssignmentContext = React.createContext(initialState);

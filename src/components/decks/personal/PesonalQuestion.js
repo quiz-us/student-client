@@ -41,12 +41,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PersonalQuestion = ({ currentStudent, currentQuestion }) => {
+const PersonalQuestion = ({ currentStudent }) => {
   const { personalAssignment, dispatch } = useContext(
     PersonalAssignmentContext
   );
 
-  const { responses } = personalAssignment;
+  const { responses, currentQuestion } = personalAssignment;
 
   const questionNum = Object.keys(responses).length + 1;
   const {
@@ -174,9 +174,11 @@ const PersonalQuestion = ({ currentStudent, currentQuestion }) => {
 
   return (
     <div className={classes.root}>
-      <Card className={classes.card} key={`personalQ${questionId}`}>
-        <CardHeader title={`Question # ${questionNum}`} />
-        <CardContent>
+      <Card
+        className={classes.card}
+        key={`personalQ-${questionId}-${questionNum}`}
+      >
+        <CardContent className={classes.question}>
           <ReadOnly value={JSON.parse(richText)} />
           {renderResponseArea()}
         </CardContent>
@@ -205,27 +207,22 @@ const PersonalQuestion = ({ currentStudent, currentQuestion }) => {
 export default ({ currentStudent }) => {
   const { personalAssignment } = useContext(PersonalAssignmentContext);
 
-  const { assignment, responses, loading } = personalAssignment;
+  const { assignment, loading, currentQuestion } = personalAssignment;
   const {
     deck: { questions }
   } = assignment;
 
-  const currentQuestion = questions.find(({ id }) => !responses[id]) || {};
+  // const currentQuestion = questions.find(({ id }) => !responses[id]) || {};
 
   if (loading) {
     return <GlobalLoader />;
   }
 
-  if (!questions.length || questions.length === Object.keys(responses).length) {
+  if (!questions.length || !currentQuestion) {
     return <div>All done for now!</div>;
   }
   if (currentQuestion.id) {
-    return (
-      <PersonalQuestion
-        currentStudent={currentStudent}
-        currentQuestion={currentQuestion}
-      />
-    );
+    return <PersonalQuestion currentStudent={currentStudent} />;
   }
 
   return null;

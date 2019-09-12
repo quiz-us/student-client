@@ -53,6 +53,12 @@ export const GET_PERSONAL_ASSIGNMENT = gql`
   query getPersonalAssignment {
     personalAssignment {
       instructions
+      responses {
+        id
+        questionId
+        mcCorrect
+        selfGrade
+      }
       deck {
         id
         name
