@@ -43,6 +43,6 @@
     ]
   },
   "devDependencies": {
-    "react-test-renderer": "^16.8.6"
+    "react-test-renderer": "^16.10.2"
   }
 }
