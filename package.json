@@ -12,7 +12,7 @@
     "graphql": "^14.4.2",
     "immutable": "^4.0.0-rc.12",
     "localforage": "^1.7.3",
-    "react": "^16.8.6",
+    "react": "^16.10.2",
     "react-apollo": "^3.0.0",
     "react-dom": "^16.8.6",
     "react-qr-reader": "^2.2.1",
