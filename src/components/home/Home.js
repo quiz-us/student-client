@@ -8,11 +8,12 @@ import { GET_CURRENT_STUDENT } from '../queries/Student';
 import GlobalLoader from '../app/GlobalLoader';
 
 export default () => {
-  const { data, loading } = useQuery(GET_CURRENT_STUDENT);
+  const { data = {}, loading } = useQuery(GET_CURRENT_STUDENT);
 
   if (loading) {
     return <GlobalLoader />;
   }
+
   const { currentStudent } = data;
 
   if (!currentStudent) {
