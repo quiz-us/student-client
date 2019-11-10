@@ -10,11 +10,11 @@ import GlobalLoader from '../app/GlobalLoader';
 export default () => {
   const { data = {}, loading } = useQuery(GET_CURRENT_STUDENT);
 
-  const { currentStudent } = data;
-
   if (loading) {
     return <GlobalLoader />;
   }
+
+  const { currentStudent } = data;
 
   if (!currentStudent) {
     return <Redirect to="/login" />;

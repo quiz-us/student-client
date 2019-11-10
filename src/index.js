@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
@@ -42,7 +41,7 @@ const asyncAuthLink = setContext(
 // client side auth was heavily influenced by:
 // https://www.jaygould.co.uk/2018-08-11-react-apollo-global-error-handling/
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
+  if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) => {
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
@@ -51,6 +50,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       );
       return message;
     });
+  }
   if (networkError) {
     alert(
       `[Something bad happened. Please contact us about this error]: ${networkError}`
