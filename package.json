@@ -19,7 +19,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "slate": "^0.47.8",
-    "slate-react": "^0.22.9"
+    "slate-react": "^0.22.10"
   },
   "scripts": {
     "start": "PORT=8080 react-scripts start",
