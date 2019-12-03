@@ -10,16 +10,16 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles({
   card: {
     margin: '20px',
-    height: '90%'
+    height: '90%',
   },
   content: {
-    overflow: 'scroll',
-    maxHeight: '150px'
+    overflowY: 'auto',
+    maxHeight: '150px',
   },
   actions: {
     position: 'absolute',
-    bottom: 5
-  }
+    bottom: 5,
+  },
 });
 
 const DeckDisplay = ({ assignment }) => {
@@ -29,7 +29,7 @@ const DeckDisplay = ({ assignment }) => {
     deck,
     due,
     numQuestions,
-    numCorrectResponses
+    numCorrectResponses,
   } = assignment;
   const { name, description } = deck;
   return (
