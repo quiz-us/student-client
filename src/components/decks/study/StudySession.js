@@ -3,9 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_ASSIGNMENT } from '../../queries/Assignment';
 import GlobalLoader from '../../app/GlobalLoader';
-import StudySessionDetails from './StudySessionDetails';
+import StudySessionDetails, { drawerWidth } from './StudySessionDetails';
 import QuestionDisplay from './QuestionDisplay';
 import findCurrentQuestion from '../findCurrentQuestion';
+import AssignmentResults from './results/AssignmentResults';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,7 +14,8 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(3),
-    width: '70%',
+    boxSizing: 'border-box',
+    width: `calc(100% - ${drawerWidth}px)`,
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
@@ -60,7 +62,10 @@ const StudySession = ({ match, currentStudent }) => {
       />
       <main className={classes.content}>
         {done ? (
-          <div>You're done! Nice work!</div>
+          <AssignmentResults
+            assignmentId={assignmentId}
+            studentId={currentStudent.id}
+          />
         ) : (
           <QuestionDisplay
             key={`current-question-${numResponses}`}

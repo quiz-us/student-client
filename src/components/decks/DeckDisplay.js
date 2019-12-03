@@ -10,16 +10,16 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles({
   card: {
     margin: '20px',
-    height: '90%'
+    height: '90%',
   },
   content: {
-    overflow: 'scroll',
-    maxHeight: '150px'
+    overflowY: 'auto',
+    maxHeight: '150px',
   },
   actions: {
     position: 'absolute',
-    bottom: 5
-  }
+    bottom: 5,
+  },
 });
 
 const DeckDisplay = ({ assignment }) => {
@@ -29,17 +29,16 @@ const DeckDisplay = ({ assignment }) => {
     deck,
     due,
     numQuestions,
-    numCorrectResponses
+    numCorrectResponses,
   } = assignment;
   const { name, description } = deck;
+  const done = numCorrectResponses >= numQuestions;
   return (
     <React.Fragment>
       <Card className={classes.card}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {`${name} (${
-              numCorrectResponses >= numQuestions ? 'finished' : 'incomplete'
-            })`}
+            {`${name} (${done ? 'finished' : 'incomplete'})`}
           </Typography>
           <div className={classes.content}>
             <p>
@@ -64,7 +63,7 @@ const DeckDisplay = ({ assignment }) => {
         <CardActions className={classes.actions}>
           <Link to={`/study/${assignment.id}`}>
             <Button size="small" color="primary">
-              Study
+              {done ? 'Review' : 'Study'}
             </Button>
           </Link>
         </CardActions>
