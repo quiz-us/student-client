@@ -9,15 +9,15 @@ import findCurrentQuestion from '../findCurrentQuestion';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
   },
   content: {
     padding: theme.spacing(3),
     width: '70%',
     [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
-  }
+      width: '100%',
+    },
+  },
 }));
 
 const StudySession = ({ match, currentStudent }) => {
@@ -27,7 +27,7 @@ const StudySession = ({ match, currentStudent }) => {
     GET_ASSIGNMENT,
     {
       fetchPolicy: 'cache-and-network',
-      variables: { assignmentId, studentId: currentStudent.id }
+      variables: { assignmentId, studentId: currentStudent.id },
     }
   );
 
@@ -40,7 +40,7 @@ const StudySession = ({ match, currentStudent }) => {
   const { assignment } = assignmentData;
   const {
     responses,
-    deck: { questions }
+    deck: { questions },
   } = assignment;
 
   const { currentQuestion, numCorrectResponses } = findCurrentQuestion(
@@ -60,7 +60,7 @@ const StudySession = ({ match, currentStudent }) => {
       />
       <main className={classes.content}>
         {done ? (
-          <div>you're done! nice work!</div>
+          <div>You're done! Nice work!</div>
         ) : (
           <QuestionDisplay
             key={`current-question-${numResponses}`}
