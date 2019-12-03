@@ -1,23 +1,25 @@
 import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { PersonalAssignmentContext } from './PersonalAssignmentContext';
-import StudySessionDetails from '../study/StudySessionDetails';
+import StudySessionDetails, { drawerWidth } from '../study/StudySessionDetails';
 import PersonalQuestion from './PesonalQuestion';
 import { GET_PERSONAL_ASSIGNMENT } from '../../queries/Assignment';
 import { useApolloClient } from '@apollo/react-hooks';
 import GlobalLoader from '../../app/GlobalLoader';
 
+console.log('what it do', drawerWidth);
+
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
   },
   content: {
     padding: theme.spacing(3),
-    width: '70%',
+    width: `calc(100% - ${drawerWidth}px)`,
     [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
-  }
+      width: '100%',
+    },
+  },
 }));
 
 const PersonalAssignment = ({ currentStudent }) => {
@@ -33,12 +35,12 @@ const PersonalAssignment = ({ currentStudent }) => {
     client
       .query({
         query: GET_PERSONAL_ASSIGNMENT,
-        variables: {}
+        variables: {},
       })
       .then(({ data }) => {
         dispatch({
           type: 'setInitial',
-          assignment: data.personalAssignment
+          assignment: data.personalAssignment,
         });
       });
 
@@ -49,7 +51,7 @@ const PersonalAssignment = ({ currentStudent }) => {
     return <GlobalLoader />;
   }
   const {
-    deck: { questions }
+    deck: { questions },
   } = assignment;
   return (
     <div className={classes.root}>
