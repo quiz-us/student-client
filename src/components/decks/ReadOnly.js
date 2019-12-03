@@ -15,35 +15,38 @@ const styles = {
       marginRight: 0,
       paddingLeft: '10px',
       color: '#aaa',
-      fontStyle: 'italic'
+      fontStyle: 'italic',
     },
 
     "& blockquote[dir = 'rtl']": {
       borderLeft: 'none',
       paddingLeft: 0,
       paddingRight: '10px',
-      borderRight: '2px solid #ddd'
+      borderRight: '2px solid #ddd',
     },
 
     '& code': {
       backgroundColor: '#eee',
-      padding: '3px'
-    }
+      padding: '3px',
+    },
   },
   editor: {
     fontFamily: "'Roboto', sans-serif",
     lineHeight: 1.2,
     fontSize: '16px',
-    padding: '15px'
+    padding: '15px',
   },
   icon: {
-    width: '.8em'
-  }
+    width: '.8em',
+  },
+  image: {
+    maxWidth: '100%',
+  },
 };
 
 class ReadOnly extends React.Component {
   state = {
-    value: Value.fromJSON(this.props.value)
+    value: Value.fromJSON(this.props.value),
   };
 
   render() {
@@ -107,11 +110,11 @@ class ReadOnly extends React.Component {
 }
 
 ReadOnly.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.object,
 };
 
 ReadOnly.defaultProps = {
-  value: Plain.deserialize('')
+  value: Plain.deserialize(''),
 };
 
 export default withStyles(styles)(ReadOnly);
