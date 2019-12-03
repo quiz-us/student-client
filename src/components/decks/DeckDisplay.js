@@ -32,14 +32,13 @@ const DeckDisplay = ({ assignment }) => {
     numCorrectResponses,
   } = assignment;
   const { name, description } = deck;
+  const done = numCorrectResponses >= numQuestions;
   return (
     <React.Fragment>
       <Card className={classes.card}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {`${name} (${
-              numCorrectResponses >= numQuestions ? 'finished' : 'incomplete'
-            })`}
+            {`${name} (${done ? 'finished' : 'incomplete'})`}
           </Typography>
           <div className={classes.content}>
             <p>
@@ -64,7 +63,7 @@ const DeckDisplay = ({ assignment }) => {
         <CardActions className={classes.actions}>
           <Link to={`/study/${assignment.id}`}>
             <Button size="small" color="primary">
-              Study
+              {done ? 'Review' : 'Study'}
             </Button>
           </Link>
         </CardActions>
