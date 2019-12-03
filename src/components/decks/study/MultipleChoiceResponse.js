@@ -9,15 +9,15 @@ import { List } from 'immutable';
 const useStyles = makeStyles(theme => ({
   multipleChoice: {
     marginBottom: theme.spacing(2),
-    fontSize: '16px'
+    fontSize: '16px',
   },
   mcEditor: {
     background: blueGrey[100],
-    borderRadius: '4px'
-  }
+    borderRadius: '4px',
+  },
 }));
 
-const MultipleChoiceResponse = ({ questionOptions, handleSubmit }) => {
+const MultipleChoiceResponse = ({ questionOptions, handleSubmit, loading }) => {
   const classes = useStyles();
   const [choices, setChoices] = useState(questionOptions);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -44,7 +44,7 @@ const MultipleChoiceResponse = ({ questionOptions, handleSubmit }) => {
       )}
       {choices.map(answerChoice => {
         const { id, richText } = answerChoice;
-        const disabled = !!selectedAnswer;
+        const disabled = loading || !!selectedAnswer;
         const visible = !disabled || id === selectedAnswer;
         const visibility = visible ? 'visible' : 'hidden';
         return (

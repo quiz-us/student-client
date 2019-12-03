@@ -16,36 +16,36 @@ import MultipleChoiceResponse from './MultipleChoiceResponse';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   card: {
     width: '85%',
-    marginTop: '25px'
+    marginTop: '25px',
   },
   ratings: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   rating: {
     width: '15%',
     [theme.breakpoints.down('sm')]: {
-      width: '30%'
+      width: '30%',
     },
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   mcBottom: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }));
 
 const QuestionDisplay = ({
   currentQuestion,
   currentStudent,
   assignmentId,
-  numResponses
+  numResponses,
 }) => {
   const localKey = `QU_PERSISTED_ASSIGNMENT_${assignmentId}_STUDENT_${currentStudent.id}_QUESTION${currentQuestion.id}`;
   const persistedAnswer = localStorage.getItem(localKey) || '';
@@ -57,7 +57,7 @@ const QuestionDisplay = ({
     richText,
     questionOptions,
     questionType,
-    id: questionId
+    id: questionId,
   } = currentQuestion;
 
   const updateCache = (cache, { createResponse }) => {
@@ -65,8 +65,8 @@ const QuestionDisplay = ({
       query: GET_ASSIGNMENT,
       variables: {
         assignmentId,
-        studentId: currentStudent.id
-      }
+        studentId: currentStudent.id,
+      },
     });
     const updatedResponses = assignment.responses.concat([createResponse]);
     const immutableAssignment = Map(assignment);
@@ -77,20 +77,23 @@ const QuestionDisplay = ({
       query: GET_ASSIGNMENT,
       variables: {
         assignmentId,
-        studentId: currentStudent.id
+        studentId: currentStudent.id,
       },
-      data: { assignment: updatedAssignment }
+      data: { assignment: updatedAssignment },
     });
   };
 
-  const [createResponse, { data: mcResponse }] = useMutation(CREATE_RESPONSE, {
-    update: (cache, res) => {
-      if (questionType === 'Free Response') {
-        updateCache(cache, res.data);
-      }
-    },
-    onError: err => console.error(err)
-  });
+  const [createResponse, { data: mcResponse, loading }] = useMutation(
+    CREATE_RESPONSE,
+    {
+      update: (cache, res) => {
+        if (questionType === 'Free Response') {
+          updateCache(cache, res.data);
+        }
+      },
+      onError: err => console.error(err),
+    }
+  );
 
   const delayedUpdate = () => {
     updateCache(client, mcResponse);
@@ -112,8 +115,8 @@ const QuestionDisplay = ({
         responseText: null,
         questionOptionId,
         selfGrade: null,
-        questionType
-      }
+        questionType,
+      },
     });
     localStorage.removeItem(localKey);
   };
@@ -127,8 +130,8 @@ const QuestionDisplay = ({
           responseText: savedAnswer,
           questionOptionId: questionOptions[0].id,
           selfGrade: parseInt(selfGrade, 10),
-          questionType
-        }
+          questionType,
+        },
       });
       localStorage.removeItem(localKey);
     };
@@ -148,6 +151,7 @@ const QuestionDisplay = ({
         return (
           <MultipleChoiceResponse
             key={`mcQuestion-${currentQuestion.id}`}
+            loading={loading}
             handleSubmit={handleMCSubmit}
             questionOptions={currentQuestion.questionOptions}
           />
@@ -167,6 +171,7 @@ const QuestionDisplay = ({
               {[0, 1, 2, 3, 4, 5].map(rating => {
                 return (
                   <Button
+                    disabled={loading}
                     className={classes.rating}
                     onClick={submitFreeResponse(rating)}
                     key={`rating-${rating}`}

@@ -16,29 +16,29 @@ import GlobalLoader from '../../app/GlobalLoader';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   card: {
     width: '85%',
-    marginTop: '25px'
+    marginTop: '25px',
   },
   ratings: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   rating: {
     width: '15%',
     [theme.breakpoints.down('sm')]: {
-      width: '30%'
+      width: '30%',
     },
-    marginBottom: '20px'
+    marginBottom: '20px',
   },
   mcBottom: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }));
 
 const PersonalQuestion = ({ currentStudent }) => {
@@ -53,24 +53,27 @@ const PersonalQuestion = ({ currentStudent }) => {
     richText,
     questionOptions,
     questionType,
-    id: questionId
+    id: questionId,
   } = currentQuestion;
   const localKey = `QU_PERSISTED_PERSONAL_STUDENT_${currentStudent.id}_QUESTION${currentQuestion.id}`;
   const persistedAnswer = localStorage.getItem(localKey) || '';
   const [savedAnswer, setSavedAnswer] = useState(persistedAnswer);
   const [expanded, setExpanded] = useState(!!savedAnswer);
   const classes = useStyles();
-  const [createResponse, { data: mcResponse }] = useMutation(CREATE_RESPONSE, {
-    onCompleted: ({ createResponse: response }) => {
-      localStorage.removeItem(localKey);
-      if (questionType === 'Free Response') {
-        dispatch({ type: 'addResponse', response });
-        setExpanded(false);
-        setSavedAnswer('');
-      }
-    },
-    onError: err => console.error(err)
-  });
+  const [createResponse, { data: mcResponse, loading }] = useMutation(
+    CREATE_RESPONSE,
+    {
+      onCompleted: ({ createResponse: response }) => {
+        localStorage.removeItem(localKey);
+        if (questionType === 'Free Response') {
+          dispatch({ type: 'addResponse', response });
+          setExpanded(false);
+          setSavedAnswer('');
+        }
+      },
+      onError: err => console.error(err),
+    }
+  );
 
   const delayedUpdate = () => {
     setExpanded(false);
@@ -86,8 +89,8 @@ const PersonalQuestion = ({ currentStudent }) => {
           responseText: savedAnswer,
           questionOptionId: questionOptions[0].id,
           selfGrade: parseInt(selfGrade, 10),
-          questionType
-        }
+          questionType,
+        },
       });
     };
     // clear localStorage of persisted answer here
@@ -108,8 +111,8 @@ const PersonalQuestion = ({ currentStudent }) => {
         responseText: null,
         questionOptionId,
         selfGrade: null,
-        questionType
-      }
+        questionType,
+      },
     });
   };
 
@@ -127,6 +130,7 @@ const PersonalQuestion = ({ currentStudent }) => {
         return (
           <MultipleChoiceResponse
             key={`mcQuestion-${currentQuestion.id}`}
+            loading={loading}
             handleSubmit={handleMCSubmit}
             questionOptions={currentQuestion.questionOptions}
           />
@@ -146,6 +150,7 @@ const PersonalQuestion = ({ currentStudent }) => {
               {[0, 1, 2, 3, 4, 5].map(rating => {
                 return (
                   <Button
+                    disabled={loading}
                     className={classes.rating}
                     onClick={submitFreeResponse(rating)}
                     key={`rating-${rating}`}
@@ -209,7 +214,7 @@ export default ({ currentStudent }) => {
 
   const { assignment, loading, currentQuestion } = personalAssignment;
   const {
-    deck: { questions }
+    deck: { questions },
   } = assignment;
 
   // const currentQuestion = questions.find(({ id }) => !responses[id]) || {};
