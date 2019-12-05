@@ -4,8 +4,11 @@ import { useQuery } from '@apollo/react-hooks';
 import DeckIndex from '../decks/DeckIndex';
 import StudySession from '../decks/study/StudySession';
 import PersonalAssignment from '../decks/personal/PersonalAssignmentContainer';
+import StandardsMastery from '../mastery/StandardsMastery';
 import { GET_CURRENT_STUDENT } from '../queries/Student';
 import GlobalLoader from '../app/GlobalLoader';
+
+export const CurrentStudentContext = React.createContext({});
 
 export default () => {
   const { data = {}, loading } = useQuery(GET_CURRENT_STUDENT);
@@ -20,7 +23,7 @@ export default () => {
     return <Redirect to="/login" />;
   }
   return (
-    <React.Fragment>
+    <CurrentStudentContext.Provider value={currentStudent}>
       <Route exact path="/" component={DeckIndex} />
       <Route
         exact
@@ -32,9 +35,13 @@ export default () => {
       <Route
         exact
         path="/personal-deck"
-        component={() => <PersonalAssignment currentStudent={currentStudent} />}
+        component={() => <PersonalAssignment />}
       />
-      <Route exact path="/fun" component={() => <div>decks</div>} />
-    </React.Fragment>
+      <Route
+        exact
+        path="/standards-mastery"
+        component={() => <StandardsMastery />}
+      />
+    </CurrentStudentContext.Provider>
   );
 };

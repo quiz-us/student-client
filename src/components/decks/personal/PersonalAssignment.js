@@ -7,8 +7,6 @@ import { GET_PERSONAL_ASSIGNMENT } from '../../queries/Assignment';
 import { useApolloClient } from '@apollo/react-hooks';
 import GlobalLoader from '../../app/GlobalLoader';
 
-console.log('what it do', drawerWidth);
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -22,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PersonalAssignment = ({ currentStudent }) => {
+const PersonalAssignment = () => {
   const classes = useStyles();
   const client = useApolloClient();
   const { personalAssignment, dispatch } = useContext(
@@ -61,7 +59,7 @@ const PersonalAssignment = ({ currentStudent }) => {
         numQuestions={questions.length}
       />
       <main className={classes.content}>
-        <PersonalQuestion currentStudent={currentStudent} />
+        <PersonalQuestion />
       </main>
     </div>
   );
