@@ -55,7 +55,9 @@ const MasteryTable = ({ rows }) => {
 
 export default () => {
   const classes = useStyles();
-  const { loading, data } = useQuery(GET_STANDARDS_MASTERY);
+  const { loading, data } = useQuery(GET_STANDARDS_MASTERY, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading) {
     return <GlobalLoader />;

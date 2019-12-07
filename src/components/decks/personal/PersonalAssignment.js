@@ -24,7 +24,7 @@ const PersonalAssignment = () => {
   const classes = useStyles();
   const client = useApolloClient();
   const { personalAssignment, dispatch } = useContext(
-    PersonalAssignmentContext
+    PersonalAssignmentContext,
   );
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const PersonalAssignment = () => {
       .query({
         query: GET_PERSONAL_ASSIGNMENT,
         variables: {},
+        fetchPolicy: 'network-only',
       })
       .then(({ data }) => {
         dispatch({
