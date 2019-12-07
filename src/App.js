@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import Nav from './components/nav/Nav';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -13,8 +13,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 const theme = createMuiTheme({
   palette: {
     primary: teal,
-    secondary: amber
-  }
+    secondary: amber,
+  },
 });
 
 const App = ({ history }) => {

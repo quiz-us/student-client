@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import QrReader from 'react-qr-reader';
 import TextField from '@material-ui/core/TextField';
 import localforage from 'localforage';
@@ -12,21 +12,21 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles({
   noProgress: {
-    height: '4px'
+    height: '4px',
   },
   manualInput: {
     marginTop: '10px',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   loginForm: {
     margin: '15px auto',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   submitButton: {
-    marginLeft: '10px'
-  }
+    marginLeft: '10px',
+  },
 });
 
 const QRAuth = ({ history }) => {
@@ -37,7 +37,7 @@ const QRAuth = ({ history }) => {
     onError: err => {
       console.error(err);
       window.alert(
-        'An error occured. Please refresh and try again or ask your teacher for help.'
+        'An error occured. Please refresh and try again or ask your teacher for help.',
       );
     },
     onCompleted: ({ qrLogInStudent }) => {
@@ -47,7 +47,7 @@ const QRAuth = ({ history }) => {
           history.push('/');
         });
       }
-    }
+    },
   });
 
   if (loading) {

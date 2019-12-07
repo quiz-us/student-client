@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     width: '100vw',
     position: 'relative',
     zIndex: 1000,
-    background: 'rgba(0, 0, 0, 0.2)'
+    background: 'rgba(0, 0, 0, 0.2)',
   },
   progress: {
     position: 'absolute',
@@ -16,8 +16,8 @@ const useStyles = makeStyles({
     bottom: 0,
     left: 0,
     right: 0,
-    margin: 'auto'
-  }
+    margin: 'auto',
+  },
 });
 
 export default () => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { useMutation } from '@apollo/react-hooks';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -18,34 +18,34 @@ const styles = theme => {
     root: {
       height: '100%',
       display: 'flex',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     formContainer: {
       marginTop: '60px',
       height: 'max-content',
       width: '30%',
       [theme.breakpoints.down('md')]: {
-        width: '50%'
+        width: '50%',
       },
       [theme.breakpoints.down('sm')]: {
-        width: '85%'
+        width: '85%',
       },
       padding: '30px',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
     },
     form: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     },
     submitButton: {
-      marginTop: '30px'
+      marginTop: '30px',
     },
     loginType: {
-      marginTop: '20px'
-    }
+      marginTop: '20px',
+    },
   };
 };
 
@@ -60,7 +60,7 @@ const Login = ({ classes, history }) => {
   const [dialogState, setDialogState] = useState({
     open: false,
     message: '',
-    title: ''
+    title: '',
   });
   const [loginType, setLoginType] = useState('email');
 
@@ -77,7 +77,7 @@ const Login = ({ classes, history }) => {
       setDialogState({
         open: true,
         message,
-        title
+        title,
       });
     },
     onError: err => {
@@ -91,9 +91,9 @@ const Login = ({ classes, history }) => {
       setDialogState({
         open: true,
         message,
-        title
+        title,
       });
-    }
+    },
   });
 
   const handleSubmit = e => {
@@ -104,7 +104,7 @@ const Login = ({ classes, history }) => {
   const handleClose = () => {
     setDialogState({
       ...dialogState,
-      open: false
+      open: false,
     });
   };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Plain from 'slate-plain-serializer';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ReadOnly from '../../ReadOnly';
 
 const useStyles = makeStyles({
@@ -66,7 +66,7 @@ Responses.propTypes = {
       mcCorrect: PropTypes.bool,
       selfGrade: PropTypes.number,
       id: PropTypes.string,
-    })
+    }),
   ).isRequired,
 };
 
