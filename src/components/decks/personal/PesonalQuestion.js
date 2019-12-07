@@ -12,6 +12,7 @@ import MultipleChoiceResponse from '../study/MultipleChoiceResponse';
 import { useMutation } from '@apollo/react-hooks';
 import { PersonalAssignmentContext } from './PersonalAssignmentContext';
 import GlobalLoader from '../../app/GlobalLoader';
+import { CurrentStudentContext } from '../../home/Home';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,7 +42,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PersonalQuestion = ({ currentStudent }) => {
+const PersonalQuestion = () => {
+  const currentStudent = useContext(CurrentStudentContext);
   const { personalAssignment, dispatch } = useContext(
     PersonalAssignmentContext
   );

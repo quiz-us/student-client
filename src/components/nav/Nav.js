@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/react-hooks';
 import { useQuery } from '@apollo/react-hooks';
@@ -17,26 +18,26 @@ import { LOG_OUT } from '../queries/Student';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   menuIcon: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   white: {
-    color: 'white'
+    color: 'white',
   },
   toolbar: theme.mixins.toolbar,
   logo: {
     width: 120,
     top: '5px',
-    position: 'relative'
-  }
+    position: 'relative',
+  },
 }));
 
 export default function Nav({ history }) {
@@ -52,7 +53,7 @@ export default function Nav({ history }) {
     },
     onError: err => {
       console.log(err);
-    }
+    },
   });
 
   const classes = useStyles();
@@ -89,7 +90,7 @@ export default function Nav({ history }) {
                 anchorEl={anchorEl}
                 anchorOrigin={{
                   vertical: 'bottom',
-                  horizontal: 'right'
+                  horizontal: 'right',
                 }}
                 getContentAnchorEl={null}
                 keepMounted
@@ -100,6 +101,12 @@ export default function Nav({ history }) {
                   <MenuItem onClick={handleClose}>
                     <BookmarksIcon className={classes.menuIcon} />
                     Personal Deck
+                  </MenuItem>
+                </Link>
+                <Link to="/standards-mastery">
+                  <MenuItem onClick={handleClose}>
+                    <AssessmentIcon className={classes.menuIcon} />
+                    Standards Mastery
                   </MenuItem>
                 </Link>
                 <MenuItem onClick={handleLogOut}>

@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: '20px'
+    marginTop: '20px',
   },
   field: {
-    marginBottom: '25px'
+    marginBottom: '25px',
   },
   submit: {
     margin: '0 auto',
     width: '100px',
-    display: 'block'
-  }
+    display: 'block',
+  },
 }));
 const ResponseForm = ({ handleSubmit, savedAnswer }) => {
   const [answer, setAnswer] = useState(savedAnswer);
