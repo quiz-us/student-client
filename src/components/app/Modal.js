@@ -6,8 +6,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-const Modal = ({ open, message, title, handleClose, children, maxWidth }) => (
-  <Dialog maxWidth={maxWidth} open={open} onClose={handleClose}>
+const Modal = ({
+  open,
+  message,
+  title,
+  handleClose,
+  children,
+  maxWidth,
+  ...props
+}) => (
+  <Dialog {...props} maxWidth={maxWidth} open={open} onClose={handleClose}>
     <DialogTitle>{title}</DialogTitle>
     <DialogContent>
       {message && message}

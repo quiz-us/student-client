@@ -4,11 +4,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
   root: {
-    height: '100vh',
-    width: '100vw',
-    position: 'relative',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
     zIndex: 1000,
-    background: 'rgba(0, 0, 0, 0.2)',
+    background: 'rgba(0, 0, 0, 0.3)',
   },
   progress: {
     position: 'absolute',
