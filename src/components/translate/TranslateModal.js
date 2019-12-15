@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
   translationContainer: {
     margin: '20px 0',
-    padding: '15px 20px',
+    padding: '15px',
   },
   textarea: {
     padding: '10px',
