@@ -116,6 +116,7 @@ const TranslateModal = ({ questionId }) => {
     <div className={classes.root}>
       {!open || !data ? (
         <Button
+          data-testid="translate-button"
           variant="contained"
           onClick={handleClick}
           className={classes.translateButton}
