@@ -13,6 +13,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { PersonalAssignmentContext } from './PersonalAssignmentContext';
 import GlobalLoader from '../../app/GlobalLoader';
 import { CurrentStudentContext } from '../../home/Home';
+import TranslateModal from '../../translate/TranslateModal';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     width: '85%',
+    position: 'relative',
     marginTop: '25px',
   },
   ratings: {
@@ -185,6 +187,8 @@ const PersonalQuestion = () => {
         className={classes.card}
         key={`personalQ-${questionId}-${questionNum}`}
       >
+        <TranslateModal questionId={questionId} />
+        <CardHeader title={`Question #${questionNum}`} />
         <CardContent className={classes.question}>
           <ReadOnly value={JSON.parse(richText)} />
           {renderResponseArea()}

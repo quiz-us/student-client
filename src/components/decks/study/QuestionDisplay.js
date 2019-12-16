@@ -12,6 +12,7 @@ import { GET_ASSIGNMENT } from '../../queries/Assignment';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Map } from 'immutable';
 import MultipleChoiceResponse from './MultipleChoiceResponse';
+import TranslateModal from '../../translate/TranslateModal';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     width: '85%',
+    position: 'relative',
     marginTop: '25px',
   },
   ratings: {
@@ -202,6 +204,7 @@ const QuestionDisplay = ({
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
+        <TranslateModal questionId={questionId} />
         <CardHeader title={`Question #${currentQuestionNumber}`} />
         <CardContent>
           <ReadOnly value={JSON.parse(richText)} />
