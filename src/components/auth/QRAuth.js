@@ -37,7 +37,7 @@ const QRAuth = ({ history }) => {
     onError: err => {
       console.error(err);
       window.alert(
-        'An error occured. Please refresh and try again or ask your teacher for help.',
+        'An error occured. Please refresh and try again or ask your teacher for help.'
       );
     },
     onCompleted: ({ qrLogInStudent }) => {
@@ -45,6 +45,8 @@ const QRAuth = ({ history }) => {
       if (token) {
         localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
           history.push('/');
+          // TODO: refactor so that this hack is not necessary:
+          window.location.reload();
         });
       }
     },
@@ -87,7 +89,7 @@ const QRAuth = ({ history }) => {
         <form className={classes.loginForm} onSubmit={handleSubmit}>
           <TextField
             error={!!error}
-            type="text"
+            type="password"
             name="qrTextInput"
             label="QR Code"
             value={qrTextInput}
