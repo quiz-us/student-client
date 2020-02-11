@@ -19,7 +19,7 @@ export const GET_ASSIGNMENTS = gql`
 
 export const GET_TEACHER_ASSIGNMENT = gql`
   query getTeacherAssignment($assignmentId: ID!, $studentId: ID!) {
-    teacherAssignment(assignmentId: $assignmentId, studentId: $studentId) {
+    assignment (assignmentId: $assignmentId, studentId: $studentId) {
       instructions
       id
       due

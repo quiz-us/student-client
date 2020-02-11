@@ -35,7 +35,7 @@ const StudyTeacherAssignment = ({ match }) => {
   const { loading } = useQuery(GET_TEACHER_ASSIGNMENT, {
     fetchPolicy: 'cache-and-network',
     variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ teacherAssignment }) => {
+    onCompleted: ({ assignment: teacherAssignment }) => {
       dispatch({
         type: RECEIVE_TEACHER_ASSIGNMENT,
         teacherAssignment,
