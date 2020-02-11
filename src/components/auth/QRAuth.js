@@ -4,7 +4,7 @@ import QrReader from 'react-qr-reader';
 import TextField from '@material-ui/core/TextField';
 import localforage from 'localforage';
 import { useMutation } from '@apollo/react-hooks';
-import { QR_LOG_IN } from '../queries/Student';
+import { QR_LOG_IN } from '../gql/queries/Student';
 import Fab from '@material-ui/core/Fab';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import GlobalLoader from '../app/GlobalLoader';

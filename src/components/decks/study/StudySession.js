@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_ASSIGNMENT } from '../../queries/Assignment';
+import { GET_ASSIGNMENT } from '../../gql/queries/Assignment';
 import GlobalLoader from '../../app/GlobalLoader';
 import StudySessionDetails, { drawerWidth } from './StudySessionDetails';
 import QuestionDisplay from './QuestionDisplay';

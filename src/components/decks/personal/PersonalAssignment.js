@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { PersonalAssignmentContext } from './PersonalAssignmentContext';
 import StudySessionDetails, { drawerWidth } from '../study/StudySessionDetails';
 import PersonalQuestion from './PesonalQuestion';
-import { GET_PERSONAL_ASSIGNMENT } from '../../queries/Assignment';
+import { GET_PERSONAL_ASSIGNMENT } from '../../gql/queries/Assignment';
 import { useApolloClient } from '@apollo/react-hooks';
 import GlobalLoader from '../../app/GlobalLoader';
 
@@ -24,7 +24,7 @@ const PersonalAssignment = () => {
   const classes = useStyles();
   const client = useApolloClient();
   const { personalAssignment, dispatch } = useContext(
-    PersonalAssignmentContext,
+    PersonalAssignmentContext
   );
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react';
 
 // The component AND the query need to be exported
 import TranslateModal from './TranslateModal';
-import { TRANSLATED_QUESTION } from '../queries/Question';
+import { TRANSLATED_QUESTION } from '../gql/queries/Question';
 
 const generateMocked = data => [
   {

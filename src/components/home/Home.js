@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import DeckIndex from '../decks/DeckIndex';
-import StudySession from '../decks/study/StudySession';
+import StudySession from '../study';
 import PersonalAssignment from '../decks/personal/PersonalAssignmentContainer';
 import StandardsMastery from '../mastery/StandardsMastery';
-import { GET_CURRENT_STUDENT } from '../queries/Student';
+import { GET_CURRENT_STUDENT } from '../gql/queries/Student';
 import GlobalLoader from '../app/GlobalLoader';
 
 export const CurrentStudentContext = React.createContext({});
