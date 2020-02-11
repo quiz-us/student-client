@@ -17,33 +17,21 @@ export const GET_ASSIGNMENTS = gql`
   }
 `;
 
-export const GET_ASSIGNMENT = gql`
-  query getAssignment($assignmentId: ID!, $studentId: ID!) {
-    assignment(assignmentId: $assignmentId, studentId: $studentId) {
+export const GET_TEACHER_ASSIGNMENT = gql`
+  query getTeacherAssignment($assignmentId: ID!, $studentId: ID!) {
+    teacherAssignment(assignmentId: $assignmentId, studentId: $studentId) {
       instructions
       id
       due
+      numCorrectResponses
+      numQuestions
       deck {
         name
         description
-        id
-        questions {
-          questionText
-          id
-          questionType
-          richText
-          questionOptions {
-            richText
-            correct
-            id
-          }
-        }
       }
-      responses {
+      currentQuestion {
         id
-        questionId
-        mcCorrect
-        selfGrade
+        questionText
       }
     }
   }
