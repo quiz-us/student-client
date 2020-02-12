@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { QUESTION_ATTRIBUTES } from '../fragments/Question';
 
 export const GET_ASSIGNMENTS = gql`
   query getAssignments {
@@ -31,11 +32,11 @@ export const GET_TEACHER_ASSIGNMENT = gql`
         description
       }
       currentQuestion {
-        id
-        questionText
+        ...questionAttributes
       }
     }
   }
+  ${QUESTION_ATTRIBUTES}
 `;
 
 export const GET_PERSONAL_ASSIGNMENT = gql`

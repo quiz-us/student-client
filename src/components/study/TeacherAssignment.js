@@ -1,18 +1,18 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { CurrentStudentContext } from '../../home/Home';
+import { CurrentStudentContext } from '../home/Home';
 import {
   TeacherAssignmentContext,
   TeacherAssignmentProvider,
   RECEIVE_TEACHER_ASSIGNMENT,
-} from './TeacherAssignmentContext';
+} from './AssignmentContext';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/react-hooks';
-import { drawerWidth } from '../StudySessionSidebar';
-import { GET_TEACHER_ASSIGNMENT } from '../../gql/queries/Assignment';
-import GlobalLoader from '../../app/GlobalLoader';
-import TeacherAssignmentInfo from './TeacherAssignmentInfo';
-import TeacherAssignmentContent from './TeacherAssignmentContent';
+import { drawerWidth } from './StudySessionSidebar';
+import { GET_TEACHER_ASSIGNMENT } from '../gql/queries/Assignment';
+import GlobalLoader from '../app/GlobalLoader';
+import AssignmentContent from './AssignmentContent';
+import StudySessionSidebar from './StudySessionSidebar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const StudyTeacherAssignment = ({ match }) => {
   const currentStudent = useContext(CurrentStudentContext);
-  const { dispatch } = useContext(TeacherAssignmentContext);
+  const { dispatch, teacherAssignment } = useContext(TeacherAssignmentContext);
   const classes = useStyles();
   const { assignmentId } = match.params;
   const { loading } = useQuery(GET_TEACHER_ASSIGNMENT, {
@@ -46,16 +46,17 @@ const StudyTeacherAssignment = ({ match }) => {
       console.error(error);
     },
   });
-
-  if (loading) {
+  console.log(loading);
+  if (loading || !teacherAssignment) {
+    // if teacherAssignment has not been received yet, keep loading
     return <GlobalLoader />;
   }
 
   return (
     <div className={classes.root}>
-      <TeacherAssignmentInfo />
+      <StudySessionSidebar />
       <main className={classes.content}>
-        <TeacherAssignmentContent />
+        <AssignmentContent />
       </main>
     </div>
   );

@@ -1,12 +1,17 @@
 import React, { useContext } from 'react';
-import { TeacherAssignmentContext } from './TeacherAssignmentContext';
+import { TeacherAssignmentContext } from './AssignmentContext';
+import QuestionContent from './QuestionContent';
 
 const TeacherAssignmentContent = () => {
   const {
     teacherAssignment: { currentQuestion },
   } = useContext(TeacherAssignmentContext);
 
-  return <div>{JSON.stringify(currentQuestion, 4)}</div>;
+  return (
+    <div>
+      <QuestionContent currentQuestion={currentQuestion} />
+    </div>
+  );
 };
 
 export default TeacherAssignmentContent;

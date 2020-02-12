@@ -1,14 +1,7 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 
-const initialState = {
-  instructions: '',
-  deck: {},
-  due: '',
-  numCorrectResponses: 0,
-  numQuestions: 0,
-  currentQuestion: {},
-};
+const initialState = null;
 
 const RECEIVE_TEACHER_ASSIGNMENT = 'RECEIVE_TEACHER_ASSIGNMENT';
 
@@ -16,6 +9,7 @@ let reducer = (teacherAssignment, action) => {
   const { type } = action;
   switch (type) {
     case RECEIVE_TEACHER_ASSIGNMENT: {
+      console.log(action.teacherAssignment, 'ASSIGNMENT RECEIVED');
       return action.teacherAssignment;
     }
     default:

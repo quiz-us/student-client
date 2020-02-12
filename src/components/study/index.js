@@ -1,1 +1,1 @@
-export { default as StudyTeacherAssignment } from './teacher_assignment';
+export { default as StudyTeacherAssignment } from './TeacherAssignment';
