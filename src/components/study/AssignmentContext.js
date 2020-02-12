@@ -5,24 +5,24 @@ const initialState = null;
 
 const RECEIVE_TEACHER_ASSIGNMENT = 'RECEIVE_TEACHER_ASSIGNMENT';
 
-let reducer = (teacherAssignment, action) => {
+let reducer = (assignment, action) => {
   const { type } = action;
   switch (type) {
     case RECEIVE_TEACHER_ASSIGNMENT: {
-      console.log(action.teacherAssignment, 'ASSIGNMENT RECEIVED');
-      return action.teacherAssignment;
+      console.log(action.assignment, 'ASSIGNMENT RECEIVED');
+      return action.assignment;
     }
     default:
-      return teacherAssignment;
+      return assignment;
   }
 };
 
 const TeacherAssignmentContext = React.createContext(initialState);
 
 function TeacherAssignmentProvider({ children }) {
-  const [teacherAssignment, dispatch] = useReducer(reducer, initialState);
+  const [assignment, dispatch] = useReducer(reducer, initialState);
   return (
-    <TeacherAssignmentContext.Provider value={{ teacherAssignment, dispatch }}>
+    <TeacherAssignmentContext.Provider value={{ assignment, dispatch }}>
       {children}
     </TeacherAssignmentContext.Provider>
   );

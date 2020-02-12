@@ -4,7 +4,7 @@ import QuestionContent from './QuestionContent';
 
 const TeacherAssignmentContent = () => {
   const {
-    teacherAssignment: { currentQuestion },
+    assignment: { currentQuestion },
   } = useContext(TeacherAssignmentContext);
 
   return (

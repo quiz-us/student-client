@@ -53,14 +53,14 @@ const useStyles = makeStyles(theme => ({
 const StudySessionDetails = () => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const { teacherAssignment } = useContext(TeacherAssignmentContext);
+  const { assignment } = useContext(TeacherAssignmentContext);
   const {
     instructions,
     due,
     numCorrectResponses,
     numQuestions,
     deck: { name, description },
-  } = teacherAssignment;
+  } = assignment;
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);

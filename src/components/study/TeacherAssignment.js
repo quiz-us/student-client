@@ -30,16 +30,16 @@ const useStyles = makeStyles(theme => ({
 
 const StudyTeacherAssignment = ({ match }) => {
   const currentStudent = useContext(CurrentStudentContext);
-  const { dispatch, teacherAssignment } = useContext(TeacherAssignmentContext);
+  const { dispatch, assignment } = useContext(TeacherAssignmentContext);
   const classes = useStyles();
   const { assignmentId } = match.params;
   const { loading } = useQuery(GET_TEACHER_ASSIGNMENT, {
     fetchPolicy: 'network-only',
     variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ assignment: teacherAssignment }) => {
+    onCompleted: ({ assignment: assignment }) => {
       dispatch({
         type: RECEIVE_TEACHER_ASSIGNMENT,
-        teacherAssignment,
+        assignment,
       });
     },
     onError: error => {
@@ -47,8 +47,8 @@ const StudyTeacherAssignment = ({ match }) => {
     },
   });
   console.log(loading);
-  if (loading || !teacherAssignment) {
-    // if teacherAssignment has not been received yet, keep loading
+  if (loading || !assignment) {
+    // if assignment has not been received yet, keep loading
     return <GlobalLoader />;
   }
 
