@@ -16,11 +16,10 @@ let reducer = (teacherAssignment, action) => {
   const { type } = action;
   switch (type) {
     case RECEIVE_TEACHER_ASSIGNMENT: {
-      const { teacherAssignment } = action;
-      return teacherAssignment;
+      return action.teacherAssignment;
     }
     default:
-      return;
+      return teacherAssignment;
   }
 };
 

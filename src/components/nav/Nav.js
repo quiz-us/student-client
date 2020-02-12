@@ -52,7 +52,7 @@ export default function Nav({ history }) {
       }
     },
     onError: err => {
-      console.log(err);
+      console.error(err);
     },
   });
 

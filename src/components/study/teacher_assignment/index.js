@@ -12,6 +12,7 @@ import { drawerWidth } from '../StudySessionSidebar';
 import { GET_TEACHER_ASSIGNMENT } from '../../gql/queries/Assignment';
 import GlobalLoader from '../../app/GlobalLoader';
 import TeacherAssignmentInfo from './TeacherAssignmentInfo';
+import TeacherAssignmentContent from './TeacherAssignmentContent';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,13 +34,16 @@ const StudyTeacherAssignment = ({ match }) => {
   const classes = useStyles();
   const { assignmentId } = match.params;
   const { loading } = useQuery(GET_TEACHER_ASSIGNMENT, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     variables: { assignmentId, studentId: currentStudent.id },
     onCompleted: ({ assignment: teacherAssignment }) => {
       dispatch({
         type: RECEIVE_TEACHER_ASSIGNMENT,
         teacherAssignment,
       });
+    },
+    onError: error => {
+      console.error(error);
     },
   });
 
@@ -50,7 +54,9 @@ const StudyTeacherAssignment = ({ match }) => {
   return (
     <div className={classes.root}>
       <TeacherAssignmentInfo />
-      <main className={classes.content}>i am content</main>
+      <main className={classes.content}>
+        <TeacherAssignmentContent />
+      </main>
     </div>
   );
 };
