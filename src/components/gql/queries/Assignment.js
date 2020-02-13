@@ -34,6 +34,11 @@ export const GET_TEACHER_ASSIGNMENT = gql`
       currentQuestion {
         ...questionAttributes
       }
+      currentResponse {
+        id
+        responseText
+        mcCorrect
+      }
     }
   }
   ${QUESTION_ATTRIBUTES}

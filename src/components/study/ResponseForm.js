@@ -1,74 +1,23 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CardHeader from '@material-ui/core/CardHeader';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import PropTypes from 'prop-types';
-import ReadOnly from '../decks/ReadOnly';
+import React, { useContext } from 'react';
+import { AssignmentContext } from './AssignmentContext';
+import MultipleChoiceResponse from './MultipleChoiceResponse';
+import FreeResponse from './FreeResponse';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  card: {
-    width: '85%',
-    position: 'relative',
-    marginTop: '25px',
-  },
-  ratings: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-  rating: {
-    width: '15%',
-    [theme.breakpoints.down('sm')]: {
-      width: '30%',
-    },
-    marginBottom: '20px',
-  },
-  mcBottom: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-}));
-
-const ResponseForm = ({ currentQuestion, assignmentId }) => {
-  const classes = useStyles();
+const ResponseForm = () => {
   const {
-    richText,
-    questionOptions,
-    questionType,
-    id: questionId,
-  } = currentQuestion;
+    assignment: { currentQuestion },
+  } = useContext(AssignmentContext);
 
-  console.log(currentQuestion, 'hhu');
-  return (
-    <div className={classes.root}>
-      <Card className={classes.card}>
-        <CardContent>
-          <ReadOnly value={JSON.parse(richText)} />
-        </CardContent>
-        <CardHeader title="Correct Answer" />
-        <CardContent>
-          {questionOptions.map(answer => {
-            if (answer.correct) {
-              return (
-                <ReadOnly
-                  key={`answer-${answer.id}`}
-                  value={JSON.parse(answer.richText)}
-                />
-              );
-            }
-            return null;
-          })}
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const { questionType } = currentQuestion;
+
+  switch (questionType) {
+    case 'Multiple Choice':
+      return <MultipleChoiceResponse />;
+    case 'Free Response':
+      return <FreeResponse />;
+    default:
+      throw Error(`Question Type of ${questionType} is not supported`);
+  }
 };
 
-ResponseForm.propTypes = {};
 export default ResponseForm;

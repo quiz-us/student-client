@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { CurrentStudentContext } from '../home/Home';
 import {
-  TeacherAssignmentContext,
+  AssignmentContext,
   TeacherAssignmentProvider,
   RECEIVE_TEACHER_ASSIGNMENT,
 } from './AssignmentContext';
@@ -11,7 +11,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { drawerWidth } from './StudySessionSidebar';
 import { GET_TEACHER_ASSIGNMENT } from '../gql/queries/Assignment';
 import GlobalLoader from '../app/GlobalLoader';
-import AssignmentContent from './AssignmentContent';
+import QuestionContent from './QuestionContent';
 import StudySessionSidebar from './StudySessionSidebar';
 
 const useStyles = makeStyles(theme => ({
@@ -30,13 +30,14 @@ const useStyles = makeStyles(theme => ({
 
 const StudyTeacherAssignment = ({ match }) => {
   const currentStudent = useContext(CurrentStudentContext);
-  const { dispatch, assignment } = useContext(TeacherAssignmentContext);
+  const { dispatch, assignment } = useContext(AssignmentContext);
   const classes = useStyles();
   const { assignmentId } = match.params;
   const { loading } = useQuery(GET_TEACHER_ASSIGNMENT, {
     fetchPolicy: 'network-only',
     variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ assignment: assignment }) => {
+    onCompleted: ({ assignment }) => {
+      console.log('whats good', assignment);
       dispatch({
         type: RECEIVE_TEACHER_ASSIGNMENT,
         assignment,
@@ -56,7 +57,7 @@ const StudyTeacherAssignment = ({ match }) => {
     <div className={classes.root}>
       <StudySessionSidebar />
       <main className={classes.content}>
-        <AssignmentContent />
+        <QuestionContent />
       </main>
     </div>
   );

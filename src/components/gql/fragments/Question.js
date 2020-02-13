@@ -7,9 +7,6 @@ export const QUESTION_ATTRIBUTES = gql`
     questionType
     questionOptions {
       id
-      question {
-        id
-      }
       questionId
       correct
       richText

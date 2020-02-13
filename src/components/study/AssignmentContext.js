@@ -17,14 +17,14 @@ let reducer = (assignment, action) => {
   }
 };
 
-const TeacherAssignmentContext = React.createContext(initialState);
+const AssignmentContext = React.createContext(initialState);
 
 function TeacherAssignmentProvider({ children }) {
   const [assignment, dispatch] = useReducer(reducer, initialState);
   return (
-    <TeacherAssignmentContext.Provider value={{ assignment, dispatch }}>
+    <AssignmentContext.Provider value={{ assignment, dispatch }}>
       {children}
-    </TeacherAssignmentContext.Provider>
+    </AssignmentContext.Provider>
   );
 }
 
@@ -33,7 +33,7 @@ TeacherAssignmentProvider.propTypes = {
 };
 
 export {
-  TeacherAssignmentContext,
+  AssignmentContext,
   TeacherAssignmentProvider,
   RECEIVE_TEACHER_ASSIGNMENT,
 };
