@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
 import ReadOnly from '../decks/ReadOnly';
+import Button from '@material-ui/core/Button';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
-import { AssignmentContext } from './AssignmentContext';
-
+import { GET_NEXT_QUESTION } from '../gql/queries/Assignment';
+import { AssignmentContext, RECEIVE_NEXT_QUESTION } from './AssignmentContext';
+import { CurrentStudentContext } from '../home/Home';
 import { SELECT_MC_ANSWER } from '../gql/mutation/Response';
-import { useMutation } from '@apollo/react-hooks';
 
 const useStyles = makeStyles({
   multipleChoice: {
@@ -25,6 +27,12 @@ const useStyles = makeStyles({
   },
   icon: {
     width: '20px',
+  },
+  nextContainer: {
+    minHeight: '50px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -50,7 +58,6 @@ const MultipleChoiceResponse = () => {
     onCompleted: ({
       selectMcAnswer: { questionOptionId, correctQuestionOptionId },
     }) => {
-      console.log('WHAT CAME BACK', selectMcAnswer);
       setResponseData({
         selectedId: questionOptionId,
         correctId: correctQuestionOptionId,
@@ -61,10 +68,26 @@ const MultipleChoiceResponse = () => {
   const classes = useStyles();
   const {
     assignment: {
+      id: assignmentId,
       currentQuestion,
       currentResponse: { id },
     },
+    dispatch,
   } = useContext(AssignmentContext);
+  const currentStudent = useContext(CurrentStudentContext);
+  const [getNextQuestion] = useLazyQuery(GET_NEXT_QUESTION, {
+    fetchPolicy: 'network-only',
+    variables: { assignmentId, studentId: currentStudent.id },
+    onCompleted: ({ assignment }) => {
+      dispatch({
+        type: RECEIVE_NEXT_QUESTION,
+        assignment,
+      });
+    },
+    onError: error => {
+      console.error(error);
+    },
+  });
 
   const onClick = questionOptionId => {
     return () => {
@@ -107,6 +130,17 @@ const MultipleChoiceResponse = () => {
           </div>
         );
       })}
+      <div className={classes.nextContainer}>
+        {selectedId && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => getNextQuestion()}
+          >
+            Next Question
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

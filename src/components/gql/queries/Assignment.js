@@ -44,6 +44,25 @@ export const GET_TEACHER_ASSIGNMENT = gql`
   ${QUESTION_ATTRIBUTES}
 `;
 
+export const GET_NEXT_QUESTION = gql`
+  query getNextQuestion($assignmentId: ID!, $studentId: ID!) {
+    assignment(assignmentId: $assignmentId, studentId: $studentId) {
+      id
+      numCorrectResponses
+      numQuestions
+      currentQuestion {
+        ...questionAttributes
+      }
+      currentResponse {
+        id
+        responseText
+        mcCorrect
+      }
+    }
+  }
+  ${QUESTION_ATTRIBUTES}
+`;
+
 export const GET_PERSONAL_ASSIGNMENT = gql`
   query getPersonalAssignment {
     personalAssignment {

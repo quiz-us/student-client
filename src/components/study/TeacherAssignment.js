@@ -37,7 +37,6 @@ const StudyTeacherAssignment = ({ match }) => {
     fetchPolicy: 'network-only',
     variables: { assignmentId, studentId: currentStudent.id },
     onCompleted: ({ assignment }) => {
-      console.log('whats good', assignment);
       dispatch({
         type: RECEIVE_TEACHER_ASSIGNMENT,
         assignment,
@@ -47,7 +46,6 @@ const StudyTeacherAssignment = ({ match }) => {
       console.error(error);
     },
   });
-  console.log(loading);
   if (loading || !assignment) {
     // if assignment has not been received yet, keep loading
     return <GlobalLoader />;

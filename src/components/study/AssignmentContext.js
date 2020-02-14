@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 const initialState = null;
 
 const RECEIVE_TEACHER_ASSIGNMENT = 'RECEIVE_TEACHER_ASSIGNMENT';
+const RECEIVE_NEXT_QUESTION = 'RECEIVE_NEXT_QUESTION';
 
 let reducer = (assignment, action) => {
   const { type } = action;
   switch (type) {
     case RECEIVE_TEACHER_ASSIGNMENT: {
-      console.log(action.assignment, 'ASSIGNMENT RECEIVED');
       return action.assignment;
+    }
+    case RECEIVE_NEXT_QUESTION: {
+      return { ...assignment, ...action.assignment };
     }
     default:
       return assignment;
@@ -36,4 +39,5 @@ export {
   AssignmentContext,
   TeacherAssignmentProvider,
   RECEIVE_TEACHER_ASSIGNMENT,
+  RECEIVE_NEXT_QUESTION,
 };
