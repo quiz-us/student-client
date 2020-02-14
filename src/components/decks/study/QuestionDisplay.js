@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
 import ReadOnly from '../ReadOnly';
 import ResponseForm from './ResponseForm';
-import { CREATE_RESPONSE } from '../../gql/queries/Response';
+import { CREATE_RESPONSE } from '../../gql/mutation/Response';
 import { GET_ASSIGNMENT } from '../../gql/queries/Assignment';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Map } from 'immutable';

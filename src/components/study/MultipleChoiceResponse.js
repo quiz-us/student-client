@@ -1,13 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
 import ReadOnly from '../decks/ReadOnly';
 import blueGrey from '@material-ui/core/colors/blueGrey';
+import CheckIcon from '@material-ui/icons/Check';
+import ClearIcon from '@material-ui/icons/Clear';
 import { AssignmentContext } from './AssignmentContext';
 
-const useStyles = makeStyles(theme => ({
+import { SELECT_MC_ANSWER } from '../gql/mutation/Response';
+import { useMutation } from '@apollo/react-hooks';
+
+const useStyles = makeStyles({
   multipleChoice: {
-    marginBottom: theme.spacing(2),
     fontSize: '16px',
   },
   mcEditor: {
@@ -15,11 +19,45 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '4px',
   },
   answerChoiceContainer: {
-    padding: '0 15px',
+    margin: '25px 0 25px 25px',
+    display: 'flex',
+    alignItems: 'center',
   },
-}));
+  icon: {
+    width: '20px',
+  },
+});
+
+const Feedback = ({ selectedId, correctId, answerId }) => {
+  const classes = useStyles();
+  if (!selectedId) {
+    return <span className={classes.icon} />;
+  }
+  if (answerId === correctId) {
+    return <CheckIcon className={classes.icon} aria-label="correct answer" />;
+  }
+
+  if (selectedId === answerId) {
+    return <ClearIcon className={classes.icon} aria-label="incorrect answer" />;
+  }
+
+  return <span className={classes.icon} />;
+};
 
 const MultipleChoiceResponse = () => {
+  const [responseData, setResponseData] = useState({});
+  const [selectMcAnswer] = useMutation(SELECT_MC_ANSWER, {
+    onCompleted: ({
+      selectMcAnswer: { questionOptionId, correctQuestionOptionId },
+    }) => {
+      console.log('WHAT CAME BACK', selectMcAnswer);
+      setResponseData({
+        selectedId: questionOptionId,
+        correctId: correctQuestionOptionId,
+      });
+    },
+    onError: err => console.error(err),
+  });
   const classes = useStyles();
   const {
     assignment: {
@@ -27,6 +65,16 @@ const MultipleChoiceResponse = () => {
       currentResponse: { id },
     },
   } = useContext(AssignmentContext);
+
+  const onClick = questionOptionId => {
+    return () => {
+      selectMcAnswer({
+        variables: { questionOptionId, responseId: id },
+      });
+    };
+  };
+
+  const { selectedId, correctId } = responseData;
 
   const { questionOptions } = currentQuestion;
   // TODO:
@@ -42,12 +90,20 @@ const MultipleChoiceResponse = () => {
             className={classes.answerChoiceContainer}
             key={`answerchoice-${id}`}
           >
-            <CardActionArea className={classes.multipleChoice}>
+            <CardActionArea
+              className={classes.multipleChoice}
+              onClick={onClick(id)}
+            >
               <ReadOnly
                 value={JSON.parse(richText)}
                 editorClass={classes.mcEditor}
               />
             </CardActionArea>
+            <Feedback
+              selectedId={selectedId}
+              correctId={correctId}
+              answerId={id}
+            />
           </div>
         );
       })}

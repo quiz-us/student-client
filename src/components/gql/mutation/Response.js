@@ -24,3 +24,17 @@ export const CREATE_RESPONSE = gql`
     }
   }
 `;
+
+export const SELECT_MC_ANSWER = gql`
+  mutation($responseId: ID!, $questionOptionId: ID!) {
+    selectMcAnswer(
+      responseId: $responseId
+      questionOptionId: $questionOptionId
+    ) {
+      id
+      questionOptionId
+      mcCorrect
+      correctQuestionOptionId
+    }
+  }
+`;

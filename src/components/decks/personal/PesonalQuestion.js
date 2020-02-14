@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import ReadOnly from '../ReadOnly';
 import Collapse from '@material-ui/core/Collapse';
 import ResponseForm from '../study/ResponseForm';
-import { CREATE_RESPONSE } from '../../gql/queries/Response';
+import { CREATE_RESPONSE } from '../../gql/mutation/Response';
 import MultipleChoiceResponse from '../study/MultipleChoiceResponse';
 import { useMutation } from '@apollo/react-hooks';
 import { PersonalAssignmentContext } from './PersonalAssignmentContext';
