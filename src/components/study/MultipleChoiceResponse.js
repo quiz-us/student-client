@@ -56,11 +56,11 @@ const MultipleChoiceResponse = () => {
   const [responseData, setResponseData] = useState({});
   const [selectMcAnswer] = useMutation(SELECT_MC_ANSWER, {
     onCompleted: ({
-      selectMcAnswer: { questionOptionId, correctQuestionOptionId },
+      selectMcAnswer: { questionOptionId, correctQuestionOption },
     }) => {
       setResponseData({
         selectedId: questionOptionId,
-        correctId: correctQuestionOptionId,
+        correctId: correctQuestionOption.id,
       });
     },
     onError: err => console.error(err),
@@ -95,6 +95,11 @@ const MultipleChoiceResponse = () => {
         variables: { questionOptionId, responseId: id },
       });
     };
+  };
+
+  const handleNextQuestion = () => {
+    getNextQuestion();
+    setResponseData({});
   };
 
   const { selectedId, correctId } = responseData;
@@ -135,7 +140,7 @@ const MultipleChoiceResponse = () => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => getNextQuestion()}
+            onClick={handleNextQuestion}
           >
             Next Question
           </Button>

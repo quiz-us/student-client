@@ -40,8 +40,12 @@ const QuestionContent = () => {
   const {
     assignment: { currentQuestion },
   } = useContext(AssignmentContext);
-  const { richText, id } = currentQuestion;
 
+  if (!currentQuestion) {
+    return <div>All done for now!</div>;
+  }
+
+  const { richText, id } = currentQuestion;
   return (
     <div className={classes.root} key={`questionkey-${id}`}>
       <Card className={classes.card}>

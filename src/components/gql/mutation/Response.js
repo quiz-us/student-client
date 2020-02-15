@@ -34,7 +34,26 @@ export const SELECT_MC_ANSWER = gql`
       id
       questionOptionId
       mcCorrect
-      correctQuestionOptionId
+      correctQuestionOption {
+        id
+      }
+    }
+  }
+`;
+
+export const SUBMIT_FR_ANSWER = gql`
+  mutation($responseId: ID!, $responseText: String!) {
+    submitFrAnswer(responseId: $responseId, responseText: $responseText) {
+      id
+      responseText
+    }
+  }
+`;
+
+export const RATE_FR_ANSWER = gql`
+  mutation($responseId: ID!, $selfGrade: Int!) {
+    rateFrAnswer(responseId: $responseId, selfGrade: $selfGrade) {
+      id
     }
   }
 `;

@@ -5,6 +5,7 @@ const initialState = null;
 
 const RECEIVE_TEACHER_ASSIGNMENT = 'RECEIVE_TEACHER_ASSIGNMENT';
 const RECEIVE_NEXT_QUESTION = 'RECEIVE_NEXT_QUESTION';
+const RECEIVE_FR_TEXT = 'RECEIVE_FR_TEXT';
 
 let reducer = (assignment, action) => {
   const { type } = action;
@@ -14,6 +15,15 @@ let reducer = (assignment, action) => {
     }
     case RECEIVE_NEXT_QUESTION: {
       return { ...assignment, ...action.assignment };
+    }
+    case RECEIVE_FR_TEXT: {
+      return {
+        ...assignment,
+        currentResponse: {
+          ...assignment.currentResponse,
+          responseText: action.responseText,
+        },
+      };
     }
     default:
       return assignment;
@@ -40,4 +50,5 @@ export {
   TeacherAssignmentProvider,
   RECEIVE_TEACHER_ASSIGNMENT,
   RECEIVE_NEXT_QUESTION,
+  RECEIVE_FR_TEXT,
 };
