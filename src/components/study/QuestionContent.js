@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const QuestionContent = () => {
+const QuestionContent = ({ getNextQuestion }) => {
   const classes = useStyles();
   const {
     assignment: { currentQuestion },
@@ -51,11 +52,15 @@ const QuestionContent = () => {
       <Card className={classes.card}>
         <CardContent>
           <ReadOnly value={JSON.parse(richText)} />
-          <ResponseForm />
+          <ResponseForm getNextQuestion={getNextQuestion} />
         </CardContent>
       </Card>
     </div>
   );
+};
+
+QuestionContent.propTypes = {
+  getNextQuestion: PropTypes.func.isRequired,
 };
 
 export default QuestionContent;

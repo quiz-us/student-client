@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { CurrentStudentContext } from '../home/Home';
 import {
   AssignmentContext,
   TeacherAssignmentProvider,
@@ -11,8 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { drawerWidth } from './StudySessionSidebar';
 import {
-  GET_TEACHER_ASSIGNMENT,
-  GET_NEXT_QUESTION,
+  GET_PERSONAL_ASSIGNMENT,
+  GET_NEXT_PERSONAL_QUESTION,
 } from '../gql/queries/Assignment';
 import GlobalLoader from '../app/GlobalLoader';
 import QuestionContent from './QuestionContent';
@@ -32,31 +31,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const StudyTeacherAssignment = ({ match }) => {
-  const currentStudent = useContext(CurrentStudentContext);
+const StudyPersonalAssignment = () => {
   const { dispatch, assignment } = useContext(AssignmentContext);
   const classes = useStyles();
-  const { assignmentId } = match.params;
-  const [getNextQuestion] = useLazyQuery(GET_NEXT_QUESTION, {
+  const [getNextQuestion] = useLazyQuery(GET_NEXT_PERSONAL_QUESTION, {
     fetchPolicy: 'network-only',
-    variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ assignment }) => {
+    onCompleted: ({ personalAssignment }) => {
       dispatch({
         type: RECEIVE_NEXT_QUESTION,
-        assignment,
+        assignment: personalAssignment,
       });
     },
     onError: error => {
       console.error(error);
     },
   });
-  const { loading } = useQuery(GET_TEACHER_ASSIGNMENT, {
+  const { loading } = useQuery(GET_PERSONAL_ASSIGNMENT, {
     fetchPolicy: 'network-only',
-    variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ assignment }) => {
+    onCompleted: ({ personalAssignment }) => {
       dispatch({
         type: RECEIVE_TEACHER_ASSIGNMENT,
-        assignment,
+        assignment: {
+          ...personalAssignment,
+          personal: true,
+        },
       });
     },
     onError: error => {
@@ -78,16 +76,16 @@ const StudyTeacherAssignment = ({ match }) => {
   );
 };
 
-StudyTeacherAssignment.propTypes = {
+StudyPersonalAssignment.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({ assignmentId: PropTypes.string }),
   }).isRequired,
 };
 
-const StudyTeacherAssignmentContainer = props => (
+const StudyPersonalAssignmentContainer = props => (
   <TeacherAssignmentProvider>
-    <StudyTeacherAssignment {...props} />
+    <StudyPersonalAssignment {...props} />
   </TeacherAssignmentProvider>
 );
 
-export default StudyTeacherAssignmentContainer;
+export default StudyPersonalAssignmentContainer;

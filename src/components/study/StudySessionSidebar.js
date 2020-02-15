@@ -59,6 +59,7 @@ const StudySessionDetails = () => {
     due,
     numCorrectResponses,
     numQuestions,
+    personal,
     deck: { name, description },
   } = assignment;
 
@@ -95,17 +96,25 @@ const StudySessionDetails = () => {
       <Divider />
 
       <Container className={classes.bottomContainer}>
-        <CircularProgress
-          className={classes.progress}
-          variant="static"
-          color="secondary"
-          thickness={7}
-          size={150}
-          value={(numCorrectResponses / numQuestions) * 100 || 5}
-        />
-        <h3 className={classes.progressHeader}>
-          Progress: {`${numCorrectResponses}/${numQuestions} completed`}
-        </h3>
+        {personal ? (
+          <h3 className={classes.progressHeader}>
+            {`${numQuestions} Questions Left`}
+          </h3>
+        ) : (
+          <React.Fragment>
+            <CircularProgress
+              className={classes.progress}
+              variant="static"
+              color="secondary"
+              thickness={7}
+              size={150}
+              value={(numCorrectResponses / numQuestions) * 100 || 5}
+            />
+            <h3 className={classes.progressHeader}>
+              Progress: {`${numCorrectResponses}/${numQuestions} completed`}
+            </h3>
+          </React.Fragment>
+        )}
       </Container>
     </div>
   );

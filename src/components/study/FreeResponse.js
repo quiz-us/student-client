@@ -1,18 +1,13 @@
 import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
-import {
-  AssignmentContext,
-  RECEIVE_FR_TEXT,
-  RECEIVE_NEXT_QUESTION,
-} from './AssignmentContext';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { AssignmentContext, RECEIVE_FR_TEXT } from './AssignmentContext';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import { SUBMIT_FR_ANSWER, RATE_FR_ANSWER } from '../gql/mutation/Response';
 import { CORRECT_FR_ANSWER } from '../gql/queries/Question';
-import { GET_NEXT_QUESTION } from '../gql/queries/Assignment';
-import { CurrentStudentContext } from '../home/Home';
 import ReadOnly from '../decks/ReadOnly';
 
 const useStyles = makeStyles(theme => ({
@@ -45,18 +40,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FreeResponse = () => {
+const FreeResponse = ({ getNextQuestion }) => {
   const classes = useStyles();
 
   // Context:
   const {
     assignment: {
-      id: assignmentId,
       currentResponse: { id: responseId, responseText: submittedResponse },
     },
     dispatch,
   } = useContext(AssignmentContext);
-  const currentStudent = useContext(CurrentStudentContext);
 
   const [response, setResponse] = useState(submittedResponse || '');
 
@@ -70,23 +63,9 @@ const FreeResponse = () => {
     onError: err => console.error(err),
   });
 
-  const [getNextQuestion] = useLazyQuery(GET_NEXT_QUESTION, {
-    fetchPolicy: 'network-only',
-    variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ assignment }) => {
-      setResponse('');
-      dispatch({
-        type: RECEIVE_NEXT_QUESTION,
-        assignment,
-      });
-    },
-    onError: error => {
-      console.error(error);
-    },
-  });
-
   const [rateFrAnswer] = useMutation(RATE_FR_ANSWER, {
     onCompleted: () => {
+      setResponse('');
       getNextQuestion();
     },
     onError: err => console.error(err),
@@ -157,6 +136,10 @@ const FreeResponse = () => {
       </Collapse>
     </div>
   );
+};
+
+FreeResponse.propTypes = {
+  getNextQuestion: PropTypes.func.isRequired,
 };
 
 export default FreeResponse;

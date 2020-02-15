@@ -3,7 +3,7 @@ import { AssignmentContext } from './AssignmentContext';
 import MultipleChoiceResponse from './MultipleChoiceResponse';
 import FreeResponse from './FreeResponse';
 
-const ResponseForm = () => {
+const ResponseForm = props => {
   const {
     assignment: { currentQuestion },
   } = useContext(AssignmentContext);
@@ -12,9 +12,9 @@ const ResponseForm = () => {
 
   switch (questionType) {
     case 'Multiple Choice':
-      return <MultipleChoiceResponse />;
+      return <MultipleChoiceResponse {...props} />;
     case 'Free Response':
-      return <FreeResponse />;
+      return <FreeResponse {...props} />;
     default:
       throw Error(`Question Type of ${questionType} is not supported`);
   }

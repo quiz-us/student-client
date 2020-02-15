@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/react-hooks';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
 import ReadOnly from '../decks/ReadOnly';
@@ -7,9 +8,7 @@ import Button from '@material-ui/core/Button';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
-import { GET_NEXT_QUESTION } from '../gql/queries/Assignment';
-import { AssignmentContext, RECEIVE_NEXT_QUESTION } from './AssignmentContext';
-import { CurrentStudentContext } from '../home/Home';
+import { AssignmentContext } from './AssignmentContext';
 import { SELECT_MC_ANSWER } from '../gql/mutation/Response';
 
 const useStyles = makeStyles({
@@ -52,7 +51,7 @@ const Feedback = ({ selectedId, correctId, answerId }) => {
   return <span className={classes.icon} />;
 };
 
-const MultipleChoiceResponse = () => {
+const MultipleChoiceResponse = ({ getNextQuestion }) => {
   const [responseData, setResponseData] = useState({});
   const [selectMcAnswer] = useMutation(SELECT_MC_ANSWER, {
     onCompleted: ({
@@ -68,26 +67,10 @@ const MultipleChoiceResponse = () => {
   const classes = useStyles();
   const {
     assignment: {
-      id: assignmentId,
       currentQuestion,
       currentResponse: { id },
     },
-    dispatch,
   } = useContext(AssignmentContext);
-  const currentStudent = useContext(CurrentStudentContext);
-  const [getNextQuestion] = useLazyQuery(GET_NEXT_QUESTION, {
-    fetchPolicy: 'network-only',
-    variables: { assignmentId, studentId: currentStudent.id },
-    onCompleted: ({ assignment }) => {
-      dispatch({
-        type: RECEIVE_NEXT_QUESTION,
-        assignment,
-      });
-    },
-    onError: error => {
-      console.error(error);
-    },
-  });
 
   const onClick = questionOptionId => {
     return () => {
@@ -148,6 +131,10 @@ const MultipleChoiceResponse = () => {
       </div>
     </div>
   );
+};
+
+MultipleChoiceResponse.propTypes = {
+  getNextQuestion: PropTypes.func.isRequired,
 };
 
 export default MultipleChoiceResponse;

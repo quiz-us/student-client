@@ -2,8 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import DeckIndex from '../decks/DeckIndex';
-import { StudyTeacherAssignment } from '../study';
-import PersonalAssignment from '../decks/personal/PersonalAssignmentContainer';
+import { StudyTeacherAssignment, StudyPersonalAssignment } from '../study';
 import StandardsMastery from '../mastery/StandardsMastery';
 import { GET_CURRENT_STUDENT } from '../gql/queries/Student';
 import GlobalLoader from '../app/GlobalLoader';
@@ -29,7 +28,7 @@ export default () => {
         path="/study/:assignmentId"
         component={StudyTeacherAssignment}
       />
-      <Route exact path="/personal-deck" component={PersonalAssignment} />
+      <Route exact path="/personal-deck" component={StudyPersonalAssignment} />
       <Route exact path="/standards-mastery" component={StandardsMastery} />
     </CurrentStudentContext.Provider>
   );

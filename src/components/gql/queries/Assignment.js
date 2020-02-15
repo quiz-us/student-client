@@ -67,30 +67,42 @@ export const GET_PERSONAL_ASSIGNMENT = gql`
   query getPersonalAssignment {
     personalAssignment {
       instructions
-      responses {
-        id
-        questionId
-        mcCorrect
-        selfGrade
-      }
+      id
+      numQuestions
       deck {
         id
         name
         description
-        questions {
-          questionText
-          id
-          questionType
-          richText
-          questionOptions {
-            richText
-            correct
-            id
-          }
-        }
+      }
+      currentQuestion {
+        ...questionAttributes
+      }
+      currentResponse {
+        id
+        responseText
+        mcCorrect
       }
     }
   }
+  ${QUESTION_ATTRIBUTES}
+`;
+
+export const GET_NEXT_PERSONAL_QUESTION = gql`
+  query getPersonalAssignment {
+    personalAssignment {
+      id
+      numQuestions
+      currentQuestion {
+        ...questionAttributes
+      }
+      currentResponse {
+        id
+        responseText
+        mcCorrect
+      }
+    }
+  }
+  ${QUESTION_ATTRIBUTES}
 `;
 
 export const GET_STUDENT_ASSIGNMENT_RESULTS = gql`
