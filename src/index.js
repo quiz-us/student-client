@@ -20,7 +20,7 @@ if (NODE_ENV === 'production') {
   server = REACT_APP_SERVER;
 }
 const httpLink = createHttpLink({
-  uri: server
+  uri: server,
 });
 
 // set the auth token with every http request:
@@ -31,8 +31,8 @@ const asyncAuthLink = setContext(
         resolve({
           headers: {
             ...headers,
-            authorization: token ? `Bearer ${token}` : null
-          }
+            authorization: token ? `Bearer ${token}` : null,
+          },
         });
       });
     })
@@ -52,10 +52,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     });
   }
   if (networkError) {
-    alert(
-      `[Something bad happened. Please contact us about this error]: ${networkError}`
-    );
     console.error(`[Network error]: ${networkError}`);
+    // alert(
+    //   `[Something bad happened. Please contact us about this error]: ${networkError}`
+    // );f
   }
 });
 
@@ -64,7 +64,7 @@ const link = ApolloLink.from([errorLink, asyncAuthLink, httpLink]);
 const client = new ApolloClient({
   link,
   cache: appCache,
-  resolvers: {}
+  resolvers: {},
 });
 
 ReactDOM.render(

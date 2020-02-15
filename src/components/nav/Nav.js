@@ -10,11 +10,11 @@ import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/react-hooks';
 import { useQuery } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
-import { GET_CURRENT_LOCAL_STUDENT } from '../queries/Student';
+import { GET_CURRENT_LOCAL_STUDENT } from '../gql/queries/Student';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ReactComponent as Logo } from '../../assets/quizus.svg';
-import { LOG_OUT } from '../queries/Student';
+import { LOG_OUT } from '../gql/queries/Student';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,7 +52,7 @@ export default function Nav({ history }) {
       }
     },
     onError: err => {
-      console.log(err);
+      console.error(err);
     },
   });
 

@@ -12,3 +12,12 @@ export const TRANSLATED_QUESTION = gql`
     }
   }
 `;
+
+export const CORRECT_FR_ANSWER = gql`
+  query correctFrAnswer($responseId: ID!) {
+    correctFrAnswer(responseId: $responseId) {
+      richText
+      optionText
+    }
+  }
+`;

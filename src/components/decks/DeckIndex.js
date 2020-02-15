@@ -5,7 +5,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import Container from '@material-ui/core/Container';
 import withWidth from '@material-ui/core/withWidth';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_ASSIGNMENTS } from '../queries/Assignment';
+import { GET_ASSIGNMENTS } from '../gql/queries/Assignment';
 import DeckDisplay from './DeckDisplay';
 import GlobalLoader from '../app/GlobalLoader';
 
@@ -16,12 +16,12 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-around',
     overflow: 'scroll',
     backgroundColor: theme.palette.background.paper,
-    height: '100vh'
-  }
+    height: '100vh',
+  },
 }));
 const DeckIndex = ({ width }) => {
   const { loading, data } = useQuery(GET_ASSIGNMENTS, {
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   });
   const classes = useStyles();
 

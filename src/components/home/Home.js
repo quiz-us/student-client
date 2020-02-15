@@ -2,10 +2,9 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import DeckIndex from '../decks/DeckIndex';
-import StudySession from '../decks/study/StudySession';
-import PersonalAssignment from '../decks/personal/PersonalAssignmentContainer';
+import { StudyTeacherAssignment, StudyPersonalAssignment } from '../study';
 import StandardsMastery from '../mastery/StandardsMastery';
-import { GET_CURRENT_STUDENT } from '../queries/Student';
+import { GET_CURRENT_STUDENT } from '../gql/queries/Student';
 import GlobalLoader from '../app/GlobalLoader';
 
 export const CurrentStudentContext = React.createContext({});
@@ -18,7 +17,6 @@ export default () => {
   }
 
   const { currentStudent } = data;
-
   if (!currentStudent) {
     return <Redirect to="/login" />;
   }
@@ -28,20 +26,10 @@ export default () => {
       <Route
         exact
         path="/study/:assignmentId"
-        component={props => (
-          <StudySession currentStudent={currentStudent} {...props} />
-        )}
+        component={StudyTeacherAssignment}
       />
-      <Route
-        exact
-        path="/personal-deck"
-        component={() => <PersonalAssignment />}
-      />
-      <Route
-        exact
-        path="/standards-mastery"
-        component={() => <StandardsMastery />}
-      />
+      <Route exact path="/personal-deck" component={StudyPersonalAssignment} />
+      <Route exact path="/standards-mastery" component={StandardsMastery} />
     </CurrentStudentContext.Provider>
   );
 };

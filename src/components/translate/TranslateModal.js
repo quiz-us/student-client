@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useLazyQuery } from '@apollo/react-hooks';
 import GlobalLoader from '../app/GlobalLoader';
 import Modal from '../app/Modal';
-import { TRANSLATED_QUESTION } from '../queries/Question';
+import { TRANSLATED_QUESTION } from '../gql/queries/Question';
 
 const useStyles = makeStyles({
   root: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForwardIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { AssignmentContext } from './AssignmentContext';
 import { makeStyles } from '@material-ui/core/styles';
 
 export const drawerWidth = 250;
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: `calc(100% - ${drawerWidth}px)`,
+    width: '70%',
     [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
     },
@@ -49,14 +50,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const StudySessionDetails = ({
-  assignment,
-  numQuestions = 0,
-  numResponses = 0,
-}) => {
-  const { deck } = assignment;
+const StudySessionDetails = () => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { assignment } = useContext(AssignmentContext);
+  const {
+    instructions,
+    due,
+    numCorrectResponses,
+    numQuestions,
+    personal,
+    deck: { name, description },
+  } = assignment;
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
@@ -68,22 +73,20 @@ const StudySessionDetails = ({
       <Divider />
       <Container className={classes.topContainer}>
         <div className={classes.details}>
-          <h3>{deck.name}</h3>
+          <h3>{name}</h3>
           <div className={classes.detailsContent}>
             <div>
               <strong>Description: </strong>
-              {deck.description ? `${deck.description}` : 'No Description'}
+              {description ? `${description}` : 'No Description'}
             </div>
             <div>
               <strong>Instructions: </strong>{' '}
-              {assignment.instructions
-                ? `${assignment.instructions}`
-                : 'No Instructions'}
+              {instructions ? `${instructions}` : 'No Instructions'}
             </div>
             <div>
               <strong>Due: </strong>
-              {assignment.due
-                ? `${new Date(assignment.due).toLocaleDateString('en-US')}`
+              {due
+                ? `${new Date(due).toLocaleDateString('en-US')}`
                 : 'No Due Date'}
             </div>
           </div>
@@ -93,17 +96,25 @@ const StudySessionDetails = ({
       <Divider />
 
       <Container className={classes.bottomContainer}>
-        <CircularProgress
-          className={classes.progress}
-          variant="static"
-          color="secondary"
-          thickness={7}
-          size={150}
-          value={(numResponses / numQuestions) * 100 || 5}
-        />
-        <h3 className={classes.progressHeader}>
-          Progress: {`${numResponses}/${numQuestions} completed`}
-        </h3>
+        {personal ? (
+          <h3 className={classes.progressHeader}>
+            {`${numQuestions} Questions Left`}
+          </h3>
+        ) : (
+          <React.Fragment>
+            <CircularProgress
+              className={classes.progress}
+              variant="static"
+              color="secondary"
+              thickness={7}
+              size={150}
+              value={(numCorrectResponses / numQuestions) * 100 || 5}
+            />
+            <h3 className={classes.progressHeader}>
+              Progress: {`${numCorrectResponses}/${numQuestions} completed`}
+            </h3>
+          </React.Fragment>
+        )}
       </Container>
     </div>
   );
