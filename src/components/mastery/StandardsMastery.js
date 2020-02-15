@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_STANDARDS_MASTERY } from '../queries/Standard';
+import { GET_STANDARDS_MASTERY } from '../gql/queries/Standard';
 import GlobalLoader from '../app/GlobalLoader';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';

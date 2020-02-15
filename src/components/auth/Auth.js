@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import localforage from 'localforage';
 import { useMutation } from '@apollo/react-hooks';
-import { LOG_IN } from '../queries/Student';
+import { LOG_IN } from '../gql/queries/Student';
 
 export default ({ location: { search }, history }) => {
   const [logInStudent, { loading, error }] = useMutation(LOG_IN, {
@@ -11,13 +11,13 @@ export default ({ location: { search }, history }) => {
         localforage.setItem('__STUDENT_QUIZUS__', token).then(() => {
           const {
             push,
-            location: { state = { from: { pathname: '/' } } }
+            location: { state = { from: { pathname: '/' } } },
           } = history;
           push(state.from.pathname);
         });
       }
     },
-    onError: err => console.error('ERROR', err)
+    onError: err => console.error('ERROR', err),
   });
   useEffect(() => {
     const token = search.split('?token=')[1];

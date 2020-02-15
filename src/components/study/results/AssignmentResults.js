@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Responses from './Responses';
 import Question from './Question';
-import { GET_STUDENT_ASSIGNMENT_RESULTS } from '../../../queries/Assignment';
+import { GET_STUDENT_ASSIGNMENT_RESULTS } from '../../../gql/queries/Assignment';
 
 const useStyles = makeStyles({
   root: {},
