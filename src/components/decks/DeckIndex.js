@@ -9,14 +9,16 @@ import { GET_ASSIGNMENTS } from '../gql/queries/Assignment';
 import DeckDisplay from './DeckDisplay';
 import GlobalLoader from '../app/GlobalLoader';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    overflow: 'scroll',
     backgroundColor: theme.palette.background.paper,
     height: '100vh',
+  },
+  gridList: {
+    paddingBottom: '40px',
   },
 }));
 const DeckIndex = ({ width }) => {
@@ -39,7 +41,7 @@ const DeckIndex = ({ width }) => {
           cols={numColumns}
           className={classes.gridList}
         >
-          {studentAssignments.map(assignment => (
+          {studentAssignments.map((assignment) => (
             <GridListTile key={`assignment${assignment.id}`}>
               <DeckDisplay assignment={assignment} />
             </GridListTile>
