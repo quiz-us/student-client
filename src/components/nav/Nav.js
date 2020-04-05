@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Badge from '@material-ui/core/Badge';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -15,8 +16,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ReactComponent as Logo } from '../../assets/quizus.svg';
 import { LOG_OUT } from '../gql/queries/Student';
+import { GET_NUM_PERSONAL_QUESTIONS } from '../gql/queries/Assignment';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -40,6 +42,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const Notification = ({ variant = 'standard', children }) => {
+  const {
+    data = { personalAssignment: { numQuestions: 0 } },
+    loading,
+  } = useQuery(GET_NUM_PERSONAL_QUESTIONS, {
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+  const {
+    personalAssignment: { numQuestions },
+  } = data;
+  if (loading || !numQuestions) {
+    return children;
+  }
+  return (
+    <Badge variant={variant} badgeContent={numQuestions} color="error">
+      {children}
+    </Badge>
+  );
+};
+
 export default function Nav({ history }) {
   const { data = {} } = useQuery(GET_CURRENT_LOCAL_STUDENT);
   const { currentStudent } = data;
@@ -51,14 +75,14 @@ export default function Nav({ history }) {
         history.push('/login');
       }
     },
-    onError: err => {
+    onError: (err) => {
       console.error(err);
     },
   });
 
   const classes = useStyles();
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -85,7 +109,9 @@ export default function Nav({ history }) {
                 color="secondary"
                 variant="contained"
                 onClick={handleClick}
-              >{`${firstName} ${lastName}`}</Button>
+              >
+                <Notification>{`${firstName} ${lastName}`}</Notification>
+              </Button>
               <Menu
                 anchorEl={anchorEl}
                 anchorOrigin={{
@@ -99,8 +125,10 @@ export default function Nav({ history }) {
               >
                 <Link to="/personal-deck">
                   <MenuItem onClick={handleClose}>
-                    <BookmarksIcon className={classes.menuIcon} />
-                    Personal Deck
+                    <Notification variant="dot">
+                      <BookmarksIcon className={classes.menuIcon} />
+                      Personal Deck
+                    </Notification>
                   </MenuItem>
                 </Link>
                 <Link to="/standards-mastery">

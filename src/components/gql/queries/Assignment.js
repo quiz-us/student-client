@@ -87,6 +87,14 @@ export const GET_PERSONAL_ASSIGNMENT = gql`
   ${QUESTION_ATTRIBUTES}
 `;
 
+export const GET_NUM_PERSONAL_QUESTIONS = gql`
+  query getPersonalAssignment {
+    personalAssignment {
+      numQuestions
+    }
+  }
+`;
+
 export const GET_NEXT_PERSONAL_QUESTION = gql`
   query getPersonalAssignment {
     personalAssignment {
