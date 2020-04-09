@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
@@ -27,7 +27,7 @@ const httpLink = createHttpLink({
 const asyncAuthLink = setContext(
   (_, { headers }) =>
     new Promise((resolve, reject) => {
-      localforage.getItem('__STUDENT_QUIZUS__').then(token => {
+      localforage.getItem('__STUDENT_QUIZUS__').then((token) => {
         resolve({
           headers: {
             ...headers,
