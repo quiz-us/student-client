@@ -1,5 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,6 +13,7 @@ const useStyles = makeStyles({
   card: {
     margin: '20px',
     height: '90%',
+    backgroundColor: (props) => (props.done ? 'white' : grey[200]),
   },
   content: {
     overflowY: 'auto',
@@ -23,7 +26,6 @@ const useStyles = makeStyles({
 });
 
 const DeckDisplay = ({ assignment }) => {
-  const classes = useStyles();
   const {
     instructions,
     deck,
@@ -31,8 +33,9 @@ const DeckDisplay = ({ assignment }) => {
     numQuestions,
     numCorrectResponses,
   } = assignment;
-  const { name, description } = deck;
   const done = numCorrectResponses >= numQuestions;
+  const classes = useStyles({ done });
+  const { name, description } = deck;
   return (
     <React.Fragment>
       <Card className={classes.card}>
