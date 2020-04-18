@@ -26,8 +26,9 @@ const styles = {
     },
 
     '& code': {
-      backgroundColor: '#eee',
-      padding: '3px',
+      backgroundColor: '#263238',
+      color: '#ffb300',
+      paddingBottom: '3px',
     },
   },
   editor: {
