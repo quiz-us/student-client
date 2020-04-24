@@ -1,7 +1,6 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
 import Nav from './components/nav/Nav';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/home/Home';
 import LogIn from './components/auth/LogIn';
@@ -31,12 +30,12 @@ const App = ({ history }) => {
 
 export default () => (
   <Router>
-    <ThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Switch>
         <Route path="/auth" component={Auth} />
         <Route path="/" component={App} />
       </Switch>
-    </ThemeProvider>
+    </MuiThemeProvider>
   </Router>
 );
