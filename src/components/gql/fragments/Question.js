@@ -13,5 +13,9 @@ export const QUESTION_ATTRIBUTES = gql`
       optionText
     }
     questionText
+    standards {
+      title
+      description
+    }
   }
 `;

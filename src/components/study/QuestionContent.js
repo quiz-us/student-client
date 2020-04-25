@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
 import CardContent from '@material-ui/core/CardContent';
 import ReadOnly from '../decks/ReadOnly';
 import { AssignmentContext } from './AssignmentContext';
 import ResponseForm from './ResponseForm';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
@@ -34,6 +35,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  standardsContainer: {
+    padding: '5px 10px',
+  },
 }));
 
 const QuestionContent = ({ getNextQuestion }) => {
@@ -46,11 +50,19 @@ const QuestionContent = ({ getNextQuestion }) => {
     return <div>All done for now!</div>;
   }
 
-  const { richText, id } = currentQuestion;
+  const { richText, id, standards } = currentQuestion;
+  const [standard] = standards || [{}];
   return (
     <div className={classes.root} key={`questionkey-${id}`}>
       <Card className={classes.card}>
         <CardContent>
+          <div className={classes.standardsContainer}>
+            <strong>{`${standard.title}: `}</strong>
+            <span>{standard.description}</span>
+          </div>
+          <br />
+          <Divider />
+          <br />
           <ReadOnly value={JSON.parse(richText)} />
           <ResponseForm getNextQuestion={getNextQuestion} />
         </CardContent>
