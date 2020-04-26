@@ -90,6 +90,7 @@ export const GET_PERSONAL_ASSIGNMENT = gql`
 export const GET_NUM_PERSONAL_QUESTIONS = gql`
   query getPersonalAssignment {
     personalAssignment {
+      id
       numQuestions
     }
   }

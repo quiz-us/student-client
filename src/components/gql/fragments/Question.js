@@ -16,6 +16,7 @@ export const QUESTION_ATTRIBUTES = gql`
     standards {
       title
       description
+      id
     }
   }
 `;

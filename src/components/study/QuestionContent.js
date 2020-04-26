@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
+import Slide from '@material-ui/core/Slide';
 import CardContent from '@material-ui/core/CardContent';
 import ReadOnly from '../decks/ReadOnly';
 import { AssignmentContext } from './AssignmentContext';
@@ -54,19 +55,21 @@ const QuestionContent = ({ getNextQuestion }) => {
   const [standard] = standards || [{}];
   return (
     <div className={classes.root} key={`questionkey-${id}`}>
-      <Card className={classes.card}>
-        <CardContent>
-          <div className={classes.standardsContainer}>
-            <strong>{`${standard.title}: `}</strong>
-            <span>{standard.description}</span>
-          </div>
-          <br />
-          <Divider />
-          <br />
-          <ReadOnly value={JSON.parse(richText)} />
-          <ResponseForm getNextQuestion={getNextQuestion} />
-        </CardContent>
-      </Card>
+      <Slide direction="right" in mountOnEnter unmountOnExit>
+        <Card className={classes.card}>
+          <CardContent>
+            <div className={classes.standardsContainer}>
+              <strong>{`${standard.title}: `}</strong>
+              <span>{standard.description}</span>
+            </div>
+            <br />
+            <Divider />
+            <br />
+            <ReadOnly value={JSON.parse(richText)} />
+            <ResponseForm getNextQuestion={getNextQuestion} />
+          </CardContent>
+        </Card>
+      </Slide>
     </div>
   );
 };

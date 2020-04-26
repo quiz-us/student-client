@@ -17,7 +17,7 @@ import GlobalLoader from '../app/GlobalLoader';
 import QuestionContent from './QuestionContent';
 import StudySessionSidebar from './StudySessionSidebar';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
@@ -34,18 +34,21 @@ const useStyles = makeStyles(theme => ({
 const StudyPersonalAssignment = () => {
   const { dispatch, assignment } = useContext(AssignmentContext);
   const classes = useStyles();
-  const [getNextQuestion] = useLazyQuery(GET_NEXT_PERSONAL_QUESTION, {
-    fetchPolicy: 'network-only',
-    onCompleted: ({ personalAssignment }) => {
-      dispatch({
-        type: RECEIVE_NEXT_QUESTION,
-        assignment: personalAssignment,
-      });
-    },
-    onError: error => {
-      console.error(error);
-    },
-  });
+  const [getNextQuestion, { loading: nextQuestionLoading }] = useLazyQuery(
+    GET_NEXT_PERSONAL_QUESTION,
+    {
+      fetchPolicy: 'network-only',
+      onCompleted: ({ personalAssignment }) => {
+        dispatch({
+          type: RECEIVE_NEXT_QUESTION,
+          assignment: personalAssignment,
+        });
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    }
+  );
   const { loading } = useQuery(GET_PERSONAL_ASSIGNMENT, {
     fetchPolicy: 'network-only',
     onCompleted: ({ personalAssignment }) => {
@@ -57,7 +60,7 @@ const StudyPersonalAssignment = () => {
         },
       });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
     },
   });
@@ -65,12 +68,13 @@ const StudyPersonalAssignment = () => {
     // if assignment has not been received yet, keep loading
     return <GlobalLoader />;
   }
-
   return (
     <div className={classes.root}>
       <StudySessionSidebar />
       <main className={classes.content}>
-        <QuestionContent getNextQuestion={getNextQuestion} />
+        {!nextQuestionLoading && (
+          <QuestionContent getNextQuestion={getNextQuestion} />
+        )}
       </main>
     </div>
   );
@@ -82,7 +86,7 @@ StudyPersonalAssignment.propTypes = {
   }).isRequired,
 };
 
-const StudyPersonalAssignmentContainer = props => (
+const StudyPersonalAssignmentContainer = (props) => (
   <TeacherAssignmentProvider>
     <StudyPersonalAssignment {...props} />
   </TeacherAssignmentProvider>

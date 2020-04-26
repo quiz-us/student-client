@@ -18,7 +18,7 @@ import GlobalLoader from '../app/GlobalLoader';
 import QuestionContent from './QuestionContent';
 import StudySessionSidebar from './StudySessionSidebar';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
@@ -46,7 +46,7 @@ const StudyTeacherAssignment = ({ match }) => {
         assignment,
       });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
     },
   });
@@ -59,7 +59,7 @@ const StudyTeacherAssignment = ({ match }) => {
         assignment,
       });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
     },
   });
@@ -72,7 +72,7 @@ const StudyTeacherAssignment = ({ match }) => {
     <div className={classes.root}>
       <StudySessionSidebar />
       <main className={classes.content}>
-        <QuestionContent getNextQuestion={getNextQuestion} />
+        {!loading && <QuestionContent getNextQuestion={getNextQuestion} />}
       </main>
     </div>
   );
@@ -84,7 +84,7 @@ StudyTeacherAssignment.propTypes = {
   }).isRequired,
 };
 
-const StudyTeacherAssignmentContainer = props => (
+const StudyTeacherAssignmentContainer = (props) => (
   <TeacherAssignmentProvider>
     <StudyTeacherAssignment {...props} />
   </TeacherAssignmentProvider>
