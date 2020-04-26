@@ -5,7 +5,6 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { AssignmentContext, RECEIVE_FR_TEXT } from './AssignmentContext';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
 import { SUBMIT_FR_ANSWER, RATE_FR_ANSWER } from '../gql/mutation/Response';
 import { CORRECT_FR_ANSWER } from '../gql/queries/Question';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -54,7 +53,6 @@ const RateFreeResponse = ({
 
   useEffect(() => {
     const container = document.querySelector('#correct-answer-container');
-    console.log('sigh', container);
     if (container && !scrolled.current) {
       container.scrollIntoView({ behavior: 'smooth' });
       scrolled.current = true;
@@ -80,14 +78,17 @@ const RateFreeResponse = ({
 
   if (correctFrAnswer) {
     return (
-      <div className={classes.correctAnswerContainer}>
+      <div
+        id="correct-answer-container"
+        className={classes.correctAnswerContainer}
+      >
         <h3>Correct Answer</h3>
         <ReadOnly value={JSON.parse(correctFrAnswer.richText)} />
         <h4>How well did you do? (0 = didn't know it; 5 = perfect!)</h4>
         {ratingLoading ? (
           <LinearProgress />
         ) : (
-          <div id="correct-answer-container" className={classes.ratings}>
+          <div className={classes.ratings}>
             {[0, 1, 2, 3, 4, 5].map((rating) => {
               return (
                 <Button
@@ -184,13 +185,11 @@ const FreeResponse = ({ getNextQuestion }) => {
         </Button>
       </form>
       <div>
-        <Collapse collapsedHeight="200px" in={!!correctFrAnswer} unmountOnExit>
-          <RateFreeResponse
-            getNextQuestion={getNextQuestion}
-            setResponse={setResponse}
-            correctFrAnswer={correctFrAnswer}
-          />
-        </Collapse>
+        <RateFreeResponse
+          getNextQuestion={getNextQuestion}
+          setResponse={setResponse}
+          correctFrAnswer={correctFrAnswer}
+        />
       </div>
     </div>
   );
