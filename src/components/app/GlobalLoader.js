@@ -4,11 +4,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
   root: {
-    height: '100%',
-    width: '100%',
-    position: 'absolute',
+    height: '100vh',
+    width: '100vw',
+    position: 'relative',
     zIndex: 1000,
-    background: 'rgba(0, 0, 0, 0.3)',
+    background: 'rgba(0, 0, 0, 0.2)',
   },
   progress: {
     position: 'absolute',
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 export default () => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div className={classes.root} data-testid="global-loader">
       <CircularProgress className={classes.progress} />
     </div>
   );
