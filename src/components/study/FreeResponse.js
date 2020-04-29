@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { AssignmentContext, RECEIVE_FR_TEXT } from './AssignmentContext';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { SUBMIT_FR_ANSWER, RATE_FR_ANSWER } from '../gql/mutation/Response';
+import { EVALUATE_RESPONSE } from '../gql/queries/Response';
 import { CORRECT_FR_ANSWER } from '../gql/queries/Question';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ReadOnly from '../decks/ReadOnly';
@@ -132,6 +133,11 @@ const FreeResponse = ({ getNextQuestion }) => {
 
   const [response, setResponse] = useState(submittedResponse || '');
 
+  const [
+    evaluateResponse,
+    { called, data, loading: evaluateResponseLoading },
+  ] = useLazyQuery(EVALUATE_RESPONSE);
+
   const [submitFrAnswer, { loading }] = useMutation(SUBMIT_FR_ANSWER, {
     onCompleted: ({ submitFrAnswer: { responseText } }) => {
       dispatch({
@@ -149,7 +155,9 @@ const FreeResponse = ({ getNextQuestion }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    submitFrAnswer({ variables: { responseText: response, responseId } });
+    const variables = { responseText: response, responseId };
+    evaluateResponse({ variables });
+    submitFrAnswer({ variables });
   };
 
   const handleChange = (e) => {
