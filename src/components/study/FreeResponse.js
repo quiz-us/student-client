@@ -1,13 +1,15 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { AssignmentContext, RECEIVE_FR_TEXT } from './AssignmentContext';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { SUBMIT_FR_ANSWER, RATE_FR_ANSWER } from '../gql/mutation/Response';
+import { EVALUATE_RESPONSE } from '../gql/queries/Response';
 import { CORRECT_FR_ANSWER } from '../gql/queries/Question';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Chip from '@material-ui/core/Chip';
 import ReadOnly from '../decks/ReadOnly';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,16 +43,25 @@ const useStyles = makeStyles((theme) => ({
   progressBar: {
     marginTop: '40px',
   },
+  headerContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '10px 0',
+  },
+  evaluation: {
+    marginLeft: '10px',
+    transition: 'width 100ms ease-in-out',
+  },
 }));
 
 const RateFreeResponse = ({
   setResponse,
   getNextQuestion,
   correctFrAnswer,
+  evaluation,
 }) => {
   const classes = useStyles();
   const scrolled = useRef(false);
-
   useEffect(() => {
     const container = document.querySelector('#correct-answer-container');
     if (container && !scrolled.current) {
@@ -82,7 +93,16 @@ const RateFreeResponse = ({
         id="correct-answer-container"
         className={classes.correctAnswerContainer}
       >
-        <h3>Correct Answer</h3>
+        <div className={classes.headerContainer}>
+          <h3>Correct Answer</h3>
+          {evaluation && (
+            <Chip
+              label={evaluation}
+              className={classes.evaluation}
+              color="primary"
+            />
+          )}
+        </div>
         <ReadOnly value={JSON.parse(correctFrAnswer.richText)} />
         <h4>How well did you do? (0 = didn't know it; 5 = perfect!)</h4>
         {ratingLoading ? (
@@ -122,7 +142,7 @@ RateFreeResponse.propTypes = {
 
 const FreeResponse = ({ getNextQuestion }) => {
   const classes = useStyles();
-
+  const [evaluation, setEvaluation] = useState('loading...');
   const {
     assignment: {
       currentResponse: { id: responseId, responseText: submittedResponse },
@@ -131,6 +151,21 @@ const FreeResponse = ({ getNextQuestion }) => {
   } = useContext(AssignmentContext);
 
   const [response, setResponse] = useState(submittedResponse || '');
+  useQuery(EVALUATE_RESPONSE, {
+    variables: { responseText: submittedResponse, responseId },
+    onCompleted: (data) => {
+      if (data) {
+        const {
+          evaluateResponse: { percent },
+        } = data;
+        setEvaluation(`${percent}% match`);
+      }
+    },
+    onError: () => {
+      setEvaluation('');
+    },
+    skip: !submittedResponse,
+  });
 
   const [submitFrAnswer, { loading }] = useMutation(SUBMIT_FR_ANSWER, {
     onCompleted: ({ submitFrAnswer: { responseText } }) => {
@@ -149,7 +184,8 @@ const FreeResponse = ({ getNextQuestion }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    submitFrAnswer({ variables: { responseText: response, responseId } });
+    const variables = { responseText: response, responseId };
+    submitFrAnswer({ variables });
   };
 
   const handleChange = (e) => {
@@ -186,6 +222,7 @@ const FreeResponse = ({ getNextQuestion }) => {
       </form>
       <div>
         <RateFreeResponse
+          evaluation={evaluation}
           getNextQuestion={getNextQuestion}
           setResponse={setResponse}
           correctFrAnswer={correctFrAnswer}
