@@ -10,7 +10,7 @@
     "apollo-link-context": "^1.0.20",
     "graphql": "^14.6.0",
     "immutable": "^4.0.0-rc.12",
-    "localforage": "^1.7.3",
+    "localforage": "^1.8.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-qr-reader": "^2.2.1",
